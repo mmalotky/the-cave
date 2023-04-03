@@ -9,7 +9,11 @@ function App() {
     setScreen(<StartMenu setScreen={setScreen}/>);
   }, []);
 
-  return screen;
+  return (
+    <div className='app'>
+      {screen}
+    </div>
+  );
 }
 
 export default App;
