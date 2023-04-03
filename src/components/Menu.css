@@ -6,10 +6,12 @@
 }
 
 .menu-button {
+    font-size: 2rem;
+    font-family:'Courier New', Courier, monospace;
     margin: 1rem;
-    padding: .5rem;
+    padding: 1rem;
     background-color: bisque;
-    border-radius: .3rem;
+    border-radius: .5rem;
 }
 
 .menu-button:hover {
