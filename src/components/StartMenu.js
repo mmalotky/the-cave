@@ -1,11 +1,11 @@
-import { closeMenu } from "../animations/MenuAnimations";
+import { fadeOut } from "../animations/ComponentAnimations";
 import "./Menu.css"
 import PlayScreen from "./PlayScreen";
 
 function StartMenu({setScreen}) {
     const start = function(evt) {
         evt.preventDefault();
-        closeMenu(evt.target.parentElement)
+        fadeOut(evt.target.parentElement)
         setTimeout(() => setScreen(<PlayScreen setScreen={setScreen}/>), 1000);
     }
 
