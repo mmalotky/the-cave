@@ -9,7 +9,8 @@ function StartMenu({setScreen}) {
         setTimeout(() => setScreen(<PlayScreen setScreen={setScreen}/>), 1000);
     }
 
-    const load = function() {
+    const load = function(evt) {
+        evt.preventDefault();
         //path to load menu
     }
 
@@ -17,7 +18,7 @@ function StartMenu({setScreen}) {
         <div className="menu-container">
             <form>
                 <button onClick={(evt) => start(evt)} className="menu-button">Start</button>
-                <button onClick={() => load()} className="menu-button" disabled>Load Save</button>
+                <button onClick={(evt) => load(evt)} className="menu-button" disabled>Load Save</button>
             </form>
         </div>
     );
