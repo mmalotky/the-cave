@@ -10,8 +10,10 @@ function PlayScreen({setScreen}) {
         <PlayerAvatar key="playerAvatar"/>
     ]);
 
-    const [xMove, setXMove] = useState(false);
-    const [yMove, setYMove] = useState(false);
+    const [right, setRight] = useState(false);
+    const [left, setLeft] = useState(false);
+    const [up, setUp] = useState(false);
+    const [down, setDown] = useState(false);
 
     const [y, setY] = useState(0);
     const [x, setX] = useState(0);
@@ -24,53 +26,34 @@ function PlayScreen({setScreen}) {
                 pause();
             }
 
-            if((keylogger.includes('w') || keylogger.includes('s'))
-                    && !(keylogger.includes('w') && keylogger.includes('s'))) {
-                setYMove(true);
-            }
-            else {
-                setYMove(false);
-            }
-
-            if((keylogger.includes('a') || keylogger.includes('d'))
-                    && !(keylogger.includes('a') && keylogger.includes('d'))) {
-                setXMove(true);
-            }
-            else {
-                setXMove(false);
-            }
+            setRight(keylogger.includes('d') && !keylogger.includes('a'));
+            setLeft(keylogger.includes('a') && !keylogger.includes('d'));
+            setUp(keylogger.includes('w') && !keylogger.includes('s'));
+            setDown(keylogger.includes('s') && !keylogger.includes('w'));
         }
     }, [keylogger]);
 
-    const moveY = function() {
-        if(yMove) {
-            if(keylogger.includes('w')) {
-                setY(y - 1);
-            }
-            if(keylogger.includes('s')) {
-                setY(y + 1);
-            }
+    const move = function() {
+        if(right) {
+            setX(x+1);
         }
+        if(left) {
+            setX(x-1);
+        }
+        if(up) {
+            setY(y-1);
+        }
+        if(down) {
+            setY(y+1);
+        }
+        setTimeout(() => setTick(!tick), 500);
     }
-
-    useEffect(moveY, [yMove]);
+    const [tick, setTick] = useState(false);
+    useEffect(move,[tick]);
     
     useEffect(() => {
         console.log(y);
     }, [y]);
-
-    const moveX = function() {
-        if(xMove) {
-            if(keylogger.includes('a')) {
-                setX(x - 1);
-            }
-            if(keylogger.includes('d')) {
-                setX(x + 1);
-            }
-        }
-    }
-
-    useEffect(moveX, [xMove]);
 
     useEffect(() => {
         console.log(x);
