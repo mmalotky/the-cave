@@ -17,8 +17,14 @@ function PlayScreen({setScreen}) {
 
     const [y, setY] = useState(0);
     const [x, setX] = useState(0);
+    const [tick, setTick] = useState(false);
+    const [paused, setPaused] = useState(false);
 
     const keylogger = useKeylogger();
+
+    useEffect(() => {
+        fadeIn(".play-screen");
+    }, []);
 
     useEffect(() => {
         if(render[0].key !== "pauseMenu") {
@@ -34,6 +40,7 @@ function PlayScreen({setScreen}) {
     }, [keylogger]);
 
     const move = function() {
+        console.log("tick")
         if(right) {
             setX(x+1);
         }
@@ -46,9 +53,12 @@ function PlayScreen({setScreen}) {
         if(down) {
             setY(y+1);
         }
-        setTimeout(() => setTick(!tick), 500);
+        const tickSet = setTimeout(() => setTick(!tick), 500);
+
+        if(paused) {
+            clearTimeout(tickSet);
+        }
     }
-    const [tick, setTick] = useState(false);
     useEffect(move,[tick]);
     
     useEffect(() => {
@@ -59,11 +69,8 @@ function PlayScreen({setScreen}) {
         console.log(x);
     }, [x]);
 
-    useEffect(() => {
-        fadeIn(".play-screen");
-    }, []);
-
     const pause = function() {
+        setPaused(true);
         let newRender = [...render];
         newRender.unshift(<PauseMenu key="pauseMenu" unpause={unpause} setScreen={setScreen}/>);
         setRender(newRender);
@@ -75,7 +82,14 @@ function PlayScreen({setScreen}) {
             newRender.shift();
         }
         setRender(newRender);
+        setPaused(false);
     }
+
+    useEffect(() => {
+        if(!paused) {
+            setTick(!tick);
+        }
+    }, [paused]);
 
     return (
         <div className="play-screen">
