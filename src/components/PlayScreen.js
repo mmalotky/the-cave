@@ -24,10 +24,9 @@ function PlayScreen({setScreen}) {
         fadeIn(".play-screen");
     }, []);
 
-
     const pause = function() {
         let newRender = [...render];
-        newRender.unshift(<PauseMenu key="pauseMenu" unpause={unpause}/>);
+        newRender.unshift(<PauseMenu key="pauseMenu" unpause={unpause} setScreen={setScreen}/>);
         setRender(newRender);
     }
 
