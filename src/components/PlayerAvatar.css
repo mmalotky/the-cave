@@ -2,6 +2,7 @@
     background-color: red;
     width: 1rem;
     height: 1rem;
-    margin-left: 32rem;
-    margin-top: 16rem;
+    position: relative;
+    left: 32rem;
+    top: 16rem;
 }
