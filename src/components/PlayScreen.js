@@ -4,7 +4,7 @@ import { fadeIn, horizontalMove, verticalMove } from "../animations/ComponentAni
 import PlayerAvatar from "./PlayerAvatar";
 import useKeylogger from "../hooks/useKeylogger";
 import PauseMenu from "./PauseMenu";
-import Test from "../levels/Test";
+import Test, { checkCoords } from "../levels/Test";
 
 function PlayScreen({setScreen}) {
     const [render, setRender] = useState([
@@ -43,16 +43,16 @@ function PlayScreen({setScreen}) {
     }, [keylogger]);
 
     const move = function() {
-        if(right) {
+        if(right && checkCoords(x+17, y+34) === 0) {
             setX(x-1);
         }
-        if(left) {
+        if(left && checkCoords(x+19, y+34) === 0) {
             setX(x+1);
         }
-        if(up) {
+        if(up && checkCoords(x+18, y+35) === 0) {
             setY(y+1);
         }
-        if(down) {
+        if(down && checkCoords(x+18, y+33) === 0) {
             setY(y-1);
         }
     }
