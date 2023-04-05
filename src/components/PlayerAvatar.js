@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
 import "./PlayerAvatar.css";
 
-function PlayerAvatar() {
+function PlayerAvatar({face}) {
 
-    return <div className={"player-avatar "}/>
+    return <div className={"player-avatar " + face}/>
 }
 
 export default PlayerAvatar;

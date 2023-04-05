@@ -7,16 +7,16 @@ import PauseMenu from "./PauseMenu";
 import TestLevel, { checkCoords } from "../levels/TestLevel";
 
 function PlayScreen({setScreen}) {
+    const [face, setFace] = useState("face-down");
     const [render, setRender] = useState([
         <TestLevel key="test"/>,
-        <PlayerAvatar key="playerAvatar"/>
+        <PlayerAvatar face={face} key="playerAvatar"/>
     ]);
 
     const [right, setRight] = useState(false);
     const [left, setLeft] = useState(false);
     const [up, setUp] = useState(false);
     const [down, setDown] = useState(false);
-    const [face, setFace] = useState("face-down");
 
     const [y, setY] = useState(0);
     const [x, setX] = useState(0);
@@ -76,6 +76,13 @@ function PlayScreen({setScreen}) {
         }
     }
 
+    useEffect(() => {
+        const newAvatar = <PlayerAvatar face={face} key="playerAvatar"/>;
+        let newRender = [...render];
+        newRender[newRender.findIndex(el => el.key === "playerAvatar")] = newAvatar;
+        setRender(newRender);
+    }, [face]);
+
     const rerender = function() {
         move();
 
@@ -119,7 +126,7 @@ function PlayScreen({setScreen}) {
 
     return (
         <div className="play-screen">
-            {render}
+            { render }
         </div>
     );
 }
