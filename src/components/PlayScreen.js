@@ -43,17 +43,30 @@ function PlayScreen({setScreen}) {
     }, [keylogger]);
 
     const move = function() {
-        if(right && checkCoords(x+17, y+34) === 0) {
-            setX(x-1);
+        let newY = y;
+        let newX = x;
+        if(right) {
+            newX--;
         }
-        if(left && checkCoords(x+19, y+34) === 0) {
-            setX(x+1);
+        if(left) {
+            newX++;
         }
-        if(up && checkCoords(x+18, y+35) === 0) {
-            setY(y+1);
+        if(up) {
+            newY++;
         }
-        if(down && checkCoords(x+18, y+33) === 0) {
-            setY(y-1);
+        if(down) {
+            newY--;
+        }
+
+        if(checkCoords(newX+18, newY+34) === 0) {
+            setX(newX);
+            setY(newY);
+        }
+        else if(checkCoords(newX+18, y+34) === 0) {
+            setX(newX);
+        }
+        else if(checkCoords(x+18, newY+34) === 0) {
+            setY(newY);
         }
     }
 
