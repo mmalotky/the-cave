@@ -16,6 +16,7 @@ function PlayScreen({setScreen}) {
     const [left, setLeft] = useState(false);
     const [up, setUp] = useState(false);
     const [down, setDown] = useState(false);
+    const [face, setFace] = useState("face-down");
 
     const [y, setY] = useState(0);
     const [x, setX] = useState(0);
@@ -45,17 +46,22 @@ function PlayScreen({setScreen}) {
     const move = function() {
         let newY = y;
         let newX = x;
-        if(right) {
-            newX--;
-        }
-        if(left) {
-            newX++;
-        }
+        
         if(up) {
             newY++;
+            setFace("face-up");
         }
         if(down) {
             newY--;
+            setFace("face-down");
+        }
+        if(right) {
+            newX--;
+            setFace("face-right");
+        }
+        if(left) {
+            newX++;
+            setFace("face-left");
         }
 
         if(checkCoords(newX+18, newY+34) === 0) {
