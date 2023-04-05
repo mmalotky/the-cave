@@ -6,3 +6,19 @@
     left: 50%;
     top: 50%;
 }
+
+.face-down {
+    border-bottom-style: double;
+}
+
+.face-up {
+    border-top-style: double;
+}
+
+.face-left {
+    border-left-style: double;
+}
+
+.face-right {
+    border-right-style: double;
+}
