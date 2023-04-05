@@ -4,11 +4,11 @@ import { fadeIn, horizontalMove, verticalMove } from "../animations/ComponentAni
 import PlayerAvatar from "./PlayerAvatar";
 import useKeylogger from "../hooks/useKeylogger";
 import PauseMenu from "./PauseMenu";
-import Test, { checkCoords } from "../levels/Test";
+import TestLevel, { checkCoords } from "../levels/TestLevel";
 
 function PlayScreen({setScreen}) {
     const [render, setRender] = useState([
-        <Test key="test"/>,
+        <TestLevel key="test"/>,
         <PlayerAvatar key="playerAvatar"/>
     ]);
 
@@ -20,7 +20,7 @@ function PlayScreen({setScreen}) {
     const [y, setY] = useState(0);
     const [x, setX] = useState(0);
     const [tick, setTick] = useState(false);
-    const tickrate = 250; //ms
+    const tickrate = 200; //ms
     const [paused, setPaused] = useState(false);
 
     const keylogger = useKeylogger();
