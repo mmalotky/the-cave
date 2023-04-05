@@ -1,0 +1,10 @@
+.background-container {
+    position: absolute;
+    overflow: hidden;
+    width: 64rem;
+    height: 32rem;
+}
+
+#background {
+    width: 50rem;
+}

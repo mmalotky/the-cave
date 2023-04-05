@@ -1,8 +1,10 @@
 .menu-container {
+    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 32rem;
+    width: 64rem;
 }
 
 .menu-button {

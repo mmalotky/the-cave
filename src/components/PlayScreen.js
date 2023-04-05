@@ -4,9 +4,11 @@ import { fadeIn } from "../animations/ComponentAnimations";
 import PlayerAvatar from "./PlayerAvatar";
 import useKeylogger from "../hooks/useKeylogger";
 import PauseMenu from "./PauseMenu";
+import Test from "../levels/Test";
 
 function PlayScreen({setScreen}) {
     const [render, setRender] = useState([
+        <Test key="test"/>,
         <PlayerAvatar key="playerAvatar"/>
     ]);
 
@@ -40,7 +42,6 @@ function PlayScreen({setScreen}) {
     }, [keylogger]);
 
     const move = function() {
-        console.log("tick")
         if(right) {
             setX(x+1);
         }
@@ -53,13 +54,18 @@ function PlayScreen({setScreen}) {
         if(down) {
             setY(y+1);
         }
-        const tickSet = setTimeout(() => setTick(!tick), 500);
+    }
 
+    const rerender = function() {
+        move();
+
+        const tickSet = setTimeout(() => setTick(!tick), 500);
         if(paused) {
             clearTimeout(tickSet);
         }
     }
-    useEffect(move,[tick]);
+
+    useEffect(rerender,[tick]);
     
     useEffect(() => {
         console.log(y);
@@ -72,14 +78,14 @@ function PlayScreen({setScreen}) {
     const pause = function() {
         setPaused(true);
         let newRender = [...render];
-        newRender.unshift(<PauseMenu key="pauseMenu" unpause={unpause} setScreen={setScreen}/>);
+        newRender.push(<PauseMenu key="pauseMenu" unpause={unpause} setScreen={setScreen}/>);
         setRender(newRender);
     }
 
     const unpause = function() {
         let newRender = [...render];
-        if(render[0].key === "pauseMenu") {
-            newRender.shift();
+        if(render[render.length - 1].key === "pauseMenu") {
+            newRender.pop();
         }
         setRender(newRender);
         setPaused(false);

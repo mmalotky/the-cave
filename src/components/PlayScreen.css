@@ -1,7 +1,9 @@
 .play-screen {
     background-color: grey;
     width: 64rem;
-    height: 36rem;
+    height: 32rem;
     opacity: 0;
     display: block;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
