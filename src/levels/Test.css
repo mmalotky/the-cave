@@ -6,5 +6,6 @@
 }
 
 #background {
+    position: absolute;
     width: 50rem;
 }

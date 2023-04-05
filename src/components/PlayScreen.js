@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./PlayScreen.css";
-import { fadeIn } from "../animations/ComponentAnimations";
+import { fadeIn, horizontalMove, verticalMove } from "../animations/ComponentAnimations";
 import PlayerAvatar from "./PlayerAvatar";
 import useKeylogger from "../hooks/useKeylogger";
 import PauseMenu from "./PauseMenu";
@@ -20,6 +20,7 @@ function PlayScreen({setScreen}) {
     const [y, setY] = useState(0);
     const [x, setX] = useState(0);
     const [tick, setTick] = useState(false);
+    const tickrate = 250; //ms
     const [paused, setPaused] = useState(false);
 
     const keylogger = useKeylogger();
@@ -43,23 +44,23 @@ function PlayScreen({setScreen}) {
 
     const move = function() {
         if(right) {
-            setX(x+1);
-        }
-        if(left) {
             setX(x-1);
         }
+        if(left) {
+            setX(x+1);
+        }
         if(up) {
-            setY(y-1);
+            setY(y+1);
         }
         if(down) {
-            setY(y+1);
+            setY(y-1);
         }
     }
 
     const rerender = function() {
         move();
 
-        const tickSet = setTimeout(() => setTick(!tick), 500);
+        const tickSet = setTimeout(() => setTick(!tick), tickrate);
         if(paused) {
             clearTimeout(tickSet);
         }
@@ -68,11 +69,11 @@ function PlayScreen({setScreen}) {
     useEffect(rerender,[tick]);
     
     useEffect(() => {
-        console.log(y);
+        verticalMove("#background", y, tickrate);
     }, [y]);
 
     useEffect(() => {
-        console.log(x);
+        horizontalMove("#background", x, tickrate);
     }, [x]);
 
     const pause = function() {

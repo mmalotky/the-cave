@@ -16,16 +16,18 @@ export function fadeIn(el) {
     })
 }
 
-export function verticalMove(el, y) {
+export function verticalMove(el, y, rate) {
     gsap.to(el, {
         top: y * rem,
-        duration:1
+        ease:"linear",
+        duration:rate/1000
     })
 }
 
-export function horizontalMove(el, x) {
+export function horizontalMove(el, x, rate) {
     gsap.to(el, {
         left: x * rem,
-        duration:1
+        ease:"linear",
+        duration:rate/1000
     })
 }
