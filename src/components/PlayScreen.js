@@ -35,6 +35,9 @@ function PlayScreen({setScreen}) {
             if(keylogger.includes('Escape')) {
                 pause();
             }
+            if(keylogger.includes('f')) {
+                interact();
+            }
 
             setRight(keylogger.includes('d') && !keylogger.includes('a'));
             setLeft(keylogger.includes('a') && !keylogger.includes('d'));
@@ -42,6 +45,26 @@ function PlayScreen({setScreen}) {
             setDown(keylogger.includes('s') && !keylogger.includes('w'));
         }
     }, [keylogger]);
+
+    const interact = function() {
+        let frontY; 
+        switch(face) {
+            case "face-up": frontY = y+35; break;
+            case "face-down": frontY =  y+33; break;
+            default: frontY =  y+34; break;
+        }
+
+        let frontX;
+        switch(face) {
+            case "face-left": frontX = x+19; break;
+            case "face-right": frontX = x+17; break;
+            default: frontX = x+18; break;
+        }
+
+        if(checkCoords(frontX, frontY) > 1) {
+            console.log("ping");
+        }
+    }
 
     const move = function() {
         let newY = y;
