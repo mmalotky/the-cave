@@ -21,7 +21,7 @@ function PlayScreen({setScreen}) {
 
     const [y, setY] = useState(0);
     const [x, setX] = useState(0);
-    const [tick, setTick] = useState(false);
+    const [tick, setTick] = useState(0);
     const tickrate = 200; //ms
     const [paused, setPaused] = useState(false);
 
@@ -122,8 +122,8 @@ function PlayScreen({setScreen}) {
 
     const rerender = function() {
         move();
-
-        const tickSet = setTimeout(() => setTick(!tick), tickrate);
+        
+        const tickSet = setTimeout(() => setTick(tick < 1000 ? tick + 1 : 0), tickrate);
         if(paused) {
             clearTimeout(tickSet);
         }
@@ -157,7 +157,7 @@ function PlayScreen({setScreen}) {
 
     useEffect(() => {
         if(!paused) {
-            setTick(!tick);
+            setTick(tick+1);
         }
     }, [paused]);
 
