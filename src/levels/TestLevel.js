@@ -56,7 +56,7 @@ const grid = [
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 ]
 
-export function checkCoords(x, y) {
+export function checkCoordsTestLevel(x, y) {
     return grid[x][y];
 }
 

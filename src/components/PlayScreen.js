@@ -4,12 +4,13 @@ import { fadeIn, horizontalMove, verticalMove } from "../animations/ComponentAni
 import PlayerAvatar from "./PlayerAvatar";
 import useKeylogger from "../hooks/useKeylogger";
 import PauseMenu from "./PauseMenu";
-import TestLevel, { checkCoords } from "../levels/TestLevel";
+import LevelLoader, { checkCoords } from "../levels/LevelLoader";
 
 function PlayScreen({setScreen}) {
+    const [level, setLevel] = useState("Test");
     const [face, setFace] = useState("face-down");
     const [render, setRender] = useState([
-        <TestLevel key="test"/>,
+        <LevelLoader level={level} key="levelLoader"/>,
         <PlayerAvatar face={face} key="playerAvatar"/>
     ]);
 
@@ -61,8 +62,14 @@ function PlayScreen({setScreen}) {
             default: frontX = x+18; break;
         }
 
-        if(checkCoords(frontX, frontY) > 1) {
+        const adjacent = checkCoords(level, frontX, frontY);
+        if(adjacent > 1) {
             console.log("ping");
+            if(adjacent === 2) {
+                setLevel("Test2");
+                setX(0);
+                setY(0);
+            }
         }
     }
 
@@ -87,14 +94,14 @@ function PlayScreen({setScreen}) {
             setFace("face-left");
         }
 
-        if(checkCoords(newX+18, newY+34) === 0) {
+        if(checkCoords(level, newX+18, newY+34) === 0) {
             setX(newX);
             setY(newY);
         }
-        else if(checkCoords(newX+18, y+34) === 0) {
+        else if(checkCoords(level, newX+18, y+34) === 0) {
             setX(newX);
         }
-        else if(checkCoords(x+18, newY+34) === 0) {
+        else if(checkCoords(level, x+18, newY+34) === 0) {
             setY(newY);
         }
     }
@@ -105,6 +112,13 @@ function PlayScreen({setScreen}) {
         newRender[newRender.findIndex(el => el.key === "playerAvatar")] = newAvatar;
         setRender(newRender);
     }, [face]);
+
+    useEffect(() => {
+        const newLevel = <LevelLoader level={level} key="levelLoader"/>;
+        let newRender = [...render];
+        newRender[newRender.findIndex(el => el.key === "levelLoader")] = newLevel;
+        setRender(newRender);
+    }, [level]);
 
     const rerender = function() {
         move();
