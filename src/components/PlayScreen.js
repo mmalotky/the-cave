@@ -18,6 +18,8 @@ function PlayScreen({setScreen}) {
 
     const [y, setY] = useState(0);
     const [x, setX] = useState(0);
+    const [entityPositions, setEntityPositions] = useState({});
+
     const [tick, setTick] = useState(0);
     const tickrate = 250; //ms
     const [paused, setPaused] = useState(false);
@@ -25,7 +27,7 @@ function PlayScreen({setScreen}) {
     const [render, setRender] = useState([
         <LevelLoader level={level} key="levelLoader"/>,
         <PlayerAvatar face={face} key="playerAvatar"/>,
-        <EntityLoader level={level} key="entityLoader"/>
+        <EntityLoader level={level} setEntityPositions={setEntityPositions} key="entityLoader"/>
     ]);
 
     const keylogger = useKeylogger();
@@ -49,6 +51,10 @@ function PlayScreen({setScreen}) {
             setDown(keylogger.includes('s') && !keylogger.includes('w'));
         }
     }, [keylogger]);
+
+    const checkEntities = function(x, y) {
+        return Object.values(entityPositions).filter(e => e.x === x + 16 && e.y === y + 24).length > 0;
+    }
 
     const interact = function() {
         let frontY; 
@@ -97,14 +103,14 @@ function PlayScreen({setScreen}) {
             setFace("face-left");
         }
 
-        if(checkCoords(level, newX+18, newY+34) === 0) {
+        if(checkCoords(level, newX+18, newY+34) === 0 && !checkEntities(newX, newY)) {
             setX(newX);
             setY(newY);
         }
-        else if(checkCoords(level, newX+18, y+34) === 0) {
+        else if(checkCoords(level, newX+18, y+34) === 0 && !checkEntities(newX, y)) {
             setX(newX);
         }
-        else if(checkCoords(level, x+18, newY+34) === 0) {
+        else if(checkCoords(level, x+18, newY+34) === 0 && !checkEntities(x, newY)) {
             setY(newY);
         }
     }

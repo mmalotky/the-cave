@@ -8,7 +8,13 @@ function EntityLoader(props) {
     useEffect(() => {
         switch(props.level) {
             case "Test":
-                setEntities([<Door init={{x: "24rem", y: "20rem", collision:true}} key="door123"/>]);
+                setEntities([<Door id="door123" init={{x: "24rem", y: "20rem", collision:true}} key="door123"/>]);
+                props.setEntityPositions({
+                    door123:{
+                        x:24,
+                        y:20
+                    }
+                });
                 break;
             case "Test2":
                 setEntities([]);
