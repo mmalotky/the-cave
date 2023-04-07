@@ -18,7 +18,7 @@ function PlayScreen({setScreen}) {
 
     const [y, setY] = useState(0);
     const [x, setX] = useState(0);
-    const [entityPositions, setEntityPositions] = useState({});
+    const [entityPositions, setEntityPositions] = useState([]);
 
     const [tick, setTick] = useState(0);
     const tickrate = 250; //ms
@@ -53,7 +53,7 @@ function PlayScreen({setScreen}) {
     }, [keylogger]);
 
     const checkEntities = function(x, y) {
-        return Object.values(entityPositions).filter(e => e.x === x + 16 && e.y === y + 24).length > 0;
+        return entityPositions.find(e => e.x === x + 16 && e.y === y + 24);
     }
 
     const interact = function() {
@@ -72,12 +72,21 @@ function PlayScreen({setScreen}) {
         }
 
         const adjacent = checkCoords(level, frontX, frontY);
-        if(adjacent > 1) {
+        const entity = checkEntities(frontX - 18, frontY - 34);
+        
+        if(adjacent !== 1 && adjacent !== 0) {
             console.log("ping");
             if(adjacent === 2) {
                 setLevel("Test2");
                 setX(0);
                 setY(0);
+            }
+
+            if(adjacent === -1 && entity !== undefined) {
+                let newPositions = [...entityPositions];
+                const index = newPositions.findIndex(p => p.id === entity.id);
+                newPositions.splice(index, index+1);
+                setEntityPositions(newPositions);
             }
         }
     }
@@ -103,14 +112,14 @@ function PlayScreen({setScreen}) {
             setFace("face-left");
         }
 
-        if(checkCoords(level, newX+18, newY+34) === 0 && !checkEntities(newX, newY)) {
+        if(checkCoords(level, newX+18, newY+34) <= 0 && checkEntities(newX, newY) === undefined) {
             setX(newX);
             setY(newY);
         }
-        else if(checkCoords(level, newX+18, y+34) === 0 && !checkEntities(newX, y)) {
+        else if(checkCoords(level, newX+18, y+34) <= 0 && !checkEntities(newX, y) === undefined) {
             setX(newX);
         }
-        else if(checkCoords(level, x+18, newY+34) === 0 && !checkEntities(x, newY)) {
+        else if(checkCoords(level, x+18, newY+34) <= 0 && !checkEntities(x, newY) === undefined) {
             setY(newY);
         }
     }
@@ -124,8 +133,10 @@ function PlayScreen({setScreen}) {
 
     useEffect(() => {
         const newLevel = <LevelLoader level={level} key="levelLoader"/>;
+        const newEntities = <EntityLoader level={level} setEntityPositions={setEntityPositions} key="entityLoader"/>;
         let newRender = [...render];
         newRender[newRender.findIndex(el => el.key === "levelLoader")] = newLevel;
+        newRender[newRender.findIndex(el => el.key === "entityLoader")] = newEntities;
         setRender(newRender);
     }, [level]);
 

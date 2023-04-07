@@ -9,17 +9,20 @@ function EntityLoader(props) {
         switch(props.level) {
             case "Test":
                 setEntities([<Door id="door123" init={{x: "24rem", y: "20rem", collision:true}} key="door123"/>]);
-                props.setEntityPositions({
-                    door123:{
+                props.setEntityPositions([
+                    {
+                        id:"door123",
                         x:24,
                         y:20
                     }
-                });
+                ]);
                 break;
             case "Test2":
                 setEntities([]);
+                props.setEntityPositions([]);
                 break;
         };
+        console.log(entities)
     }, []);
 
     return (
