@@ -1,0 +1,8 @@
+.entity-loader {
+    position: absolute;
+    display: block;
+}
+
+.entity-container {
+    position: relative;
+}

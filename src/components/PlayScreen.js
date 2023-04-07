@@ -5,14 +5,11 @@ import PlayerAvatar from "./PlayerAvatar";
 import useKeylogger from "../hooks/useKeylogger";
 import PauseMenu from "./PauseMenu";
 import LevelLoader, { checkCoords } from "../levels/LevelLoader";
+import EntityLoader from "../entities/EntityLoader"
 
 function PlayScreen({setScreen}) {
     const [level, setLevel] = useState("Test");
     const [face, setFace] = useState("face-down");
-    const [render, setRender] = useState([
-        <LevelLoader level={level} key="levelLoader"/>,
-        <PlayerAvatar face={face} key="playerAvatar"/>
-    ]);
 
     const [right, setRight] = useState(false);
     const [left, setLeft] = useState(false);
@@ -22,8 +19,14 @@ function PlayScreen({setScreen}) {
     const [y, setY] = useState(0);
     const [x, setX] = useState(0);
     const [tick, setTick] = useState(0);
-    const tickrate = 200; //ms
+    const tickrate = 250; //ms
     const [paused, setPaused] = useState(false);
+
+    const [render, setRender] = useState([
+        <LevelLoader level={level} key="levelLoader"/>,
+        <PlayerAvatar face={face} key="playerAvatar"/>,
+        <EntityLoader level={level} key="entityLoader"/>
+    ]);
 
     const keylogger = useKeylogger();
 
@@ -32,7 +35,7 @@ function PlayScreen({setScreen}) {
     }, []);
 
     useEffect(() => {
-        if(render[0].key !== "pauseMenu") {
+        if(render[render.length - 1].key !== "pauseMenu") {
             if(keylogger.includes('Escape')) {
                 pause();
             }
@@ -122,7 +125,7 @@ function PlayScreen({setScreen}) {
 
     const rerender = function() {
         move();
-        
+
         const tickSet = setTimeout(() => setTick(tick < 1000 ? tick + 1 : 0), tickrate);
         if(paused) {
             clearTimeout(tickSet);
@@ -133,10 +136,12 @@ function PlayScreen({setScreen}) {
     
     useEffect(() => {
         verticalMove("#background", y, tickrate);
+        verticalMove(".entity-container", y, tickrate);
     }, [y]);
 
     useEffect(() => {
         horizontalMove("#background", x, tickrate);
+        horizontalMove(".entity-container", x, tickrate);
     }, [x]);
 
     const pause = function() {
