@@ -11,13 +11,13 @@ function EntityLoader(props) {
                 props.setEntities([
                     {
                         id:"door123",
-                        el:<Door id="door123" init={{x: "24rem", y: "20rem"}} key="door123"/>,
+                        el:<Door id="door123" init={{left:"24rem", top:"20rem"}} key="door123"/>,
                         x:24,
                         y:20
                     },
                     {
                         id:"guard1",
-                        el:<Guard id="guard1" init={{x: "15rem", y: "10rem"}} key="guard1"/>,
+                        el:<Guard id="guard1" init={{left:"15rem", top:"10rem"}} key="guard1"/>,
                         x:15,
                         y:10
                     }
