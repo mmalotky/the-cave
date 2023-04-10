@@ -57,6 +57,10 @@ function PlayScreen({setScreen}) {
         return entities.find(e => e.x === -x + 32 && e.y === -y + 16);
     }
 
+    const updateEntities = function() {
+
+    }
+
     const interact = function() {
         let frontY; 
         switch(face) {
@@ -75,20 +79,18 @@ function PlayScreen({setScreen}) {
         const adjacent = checkCoords(level, frontX, frontY);
         const entity = checkEntities(frontX - 18, frontY - 34);
         
-        if(adjacent !== 1 && adjacent !== 0) {
-            console.log("ping");
-            if(adjacent === 2) {
-                setLevel("Test2");
-                setX(0);
-                setY(0);
-            }
+        
+        if(adjacent === 2) {
+            setLevel("Test2");
+            setX(0);
+            setY(0);
+        }
 
-            if(adjacent === -1 && entity !== undefined) {
-                let newEntities = [...entities];
-                const index = newEntities.findIndex(p => p.id === entity.id);
-                newEntities.splice(index, index+1);
-                setEntities(newEntities);
-            }
+        if(entity !== undefined && entity.unfixed) {
+            let newEntities = [...entities];
+            const index = newEntities.findIndex(p => p.id === entity.id);
+            newEntities.splice(index, index+1);
+            setEntities(newEntities);
         }
     }
 
