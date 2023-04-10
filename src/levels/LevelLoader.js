@@ -10,6 +10,15 @@ export function checkCoords(level, x, y) {
     }
 }
 
+export function startingCoords(level) {
+    switch(level) {
+        case "Test":
+            return {x:8, y:8};
+        case "Test2":
+            return {x:30, y:14};
+    }
+}
+
 function LevelLoader({level}) {
     switch(level) {
         case "Test":

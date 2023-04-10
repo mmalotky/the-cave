@@ -9,10 +9,11 @@ export function fadeOut(el) {
     })
 }
 
-export function fadeIn(el) {
+export function fadeIn(el, rate) {
     gsap.to(el, {
         opacity:1,
-        duration:1
+        duration:1,
+        delay:rate/1000
     })
 }
 

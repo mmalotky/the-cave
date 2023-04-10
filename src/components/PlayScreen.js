@@ -4,7 +4,7 @@ import { fadeIn, horizontalMove, verticalMove } from "../animations/ComponentAni
 import PlayerAvatar from "./PlayerAvatar";
 import useKeylogger from "../hooks/useKeylogger";
 import PauseMenu from "./PauseMenu";
-import LevelLoader, { checkCoords } from "../levels/LevelLoader";
+import LevelLoader, { checkCoords, startingCoords } from "../levels/LevelLoader";
 import EntityLoader from "../entities/EntityLoader"
 import { entityMovement } from "../entities/entityMovement";
 
@@ -35,7 +35,7 @@ function PlayScreen({setScreen}) {
     const keylogger = useKeylogger();
 
     useEffect(() => {
-        fadeIn(".play-screen");
+        fadeIn(".play-screen", tickrate*2);
     }, []);
 
     useEffect(() => {
@@ -142,6 +142,9 @@ function PlayScreen({setScreen}) {
     }, [face]);
 
     useEffect(() => {
+        const start = startingCoords(level);
+        setX(start.x);
+        setY(start.y);
         const newLevel = <LevelLoader level={level} key="levelLoader"/>;
         const newEntities = <EntityLoader level={level} entities={entities} setEntities={setEntities} key="entityLoader"/>;
         let newRender = [...render];
