@@ -18,7 +18,8 @@ function PlayScreen({setScreen}) {
 
     const [y, setY] = useState(0);
     const [x, setX] = useState(0);
-    const [entityPositions, setEntityPositions] = useState([]);
+    
+    const [entities, setEntities] = useState([]);
 
     const [tick, setTick] = useState(0);
     const tickrate = 250; //ms
@@ -27,7 +28,7 @@ function PlayScreen({setScreen}) {
     const [render, setRender] = useState([
         <LevelLoader level={level} key="levelLoader"/>,
         <PlayerAvatar face={face} key="playerAvatar"/>,
-        <EntityLoader level={level} setEntityPositions={setEntityPositions} key="entityLoader"/>
+        <EntityLoader level={level} entities={entities} setEntities={setEntities} key="entityLoader"/>
     ]);
 
     const keylogger = useKeylogger();
@@ -53,7 +54,7 @@ function PlayScreen({setScreen}) {
     }, [keylogger]);
 
     const checkEntities = function(x, y) {
-        return entityPositions.find(e => e.x === x + 16 && e.y === y + 24);
+        return entities.find(e => e.x === x + 16 && e.y === y + 24);
     }
 
     const interact = function() {
@@ -83,10 +84,10 @@ function PlayScreen({setScreen}) {
             }
 
             if(adjacent === -1 && entity !== undefined) {
-                let newPositions = [...entityPositions];
-                const index = newPositions.findIndex(p => p.id === entity.id);
-                newPositions.splice(index, index+1);
-                setEntityPositions(newPositions);
+                let newEntities = [...entities];
+                const index = newEntities.findIndex(p => p.id === entity.id);
+                newEntities.splice(index, index+1);
+                setEntities(newEntities);
             }
         }
     }
@@ -133,12 +134,19 @@ function PlayScreen({setScreen}) {
 
     useEffect(() => {
         const newLevel = <LevelLoader level={level} key="levelLoader"/>;
-        const newEntities = <EntityLoader level={level} setEntityPositions={setEntityPositions} key="entityLoader"/>;
+        const newEntities = <EntityLoader level={level} entities={entities} setEntities={setEntities} key="entityLoader"/>;
         let newRender = [...render];
         newRender[newRender.findIndex(el => el.key === "levelLoader")] = newLevel;
         newRender[newRender.findIndex(el => el.key === "entityLoader")] = newEntities;
         setRender(newRender);
     }, [level]);
+
+    useEffect(() => {
+        const newEntities = <EntityLoader level={level} entities={entities} setEntities={setEntities} key="entityLoader"/>;
+        let newRender = [...render];
+        newRender[newRender.findIndex(el => el.key === "entityLoader")] = newEntities;
+        setRender(newRender);
+    }, [entities])
 
     const rerender = function() {
         move();

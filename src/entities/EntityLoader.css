@@ -1,6 +1,9 @@
 .entity-loader {
     position: absolute;
     display: block;
+    width: 64rem;
+    height: 32rem;
+    overflow: hidden;
 }
 
 .entity-container {
