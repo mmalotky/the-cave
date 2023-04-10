@@ -6,6 +6,7 @@ import useKeylogger from "../hooks/useKeylogger";
 import PauseMenu from "./PauseMenu";
 import LevelLoader, { checkCoords } from "../levels/LevelLoader";
 import EntityLoader from "../entities/EntityLoader"
+import { entityMovement } from "../entities/entityMovement";
 
 function PlayScreen({setScreen}) {
     const [level, setLevel] = useState("Test");
@@ -22,7 +23,7 @@ function PlayScreen({setScreen}) {
     const [entities, setEntities] = useState([]);
 
     const [tick, setTick] = useState(0);
-    const tickrate = 250; //ms
+    const tickrate = 200; //ms
     const [paused, setPaused] = useState(false);
 
     const [render, setRender] = useState([
@@ -58,7 +59,13 @@ function PlayScreen({setScreen}) {
     }
 
     const updateEntities = function() {
-
+        let newEntities = [...entities];
+        newEntities.forEach(entity => {
+            if(entity.movement) {
+                entityMovement(entity, tickrate);
+            }
+        });
+        setEntities(newEntities);
     }
 
     const interact = function() {
@@ -148,10 +155,15 @@ function PlayScreen({setScreen}) {
         let newRender = [...render];
         newRender[newRender.findIndex(el => el.key === "entityLoader")] = newEntities;
         setRender(newRender);
-    }, [entities])
+    }, [entities]);
 
     const rerender = function() {
-        move();
+        if(tick % 2 == 0 && entities.length > 0) {
+            updateEntities();
+        }
+        else if (tick % 2 == 1){    
+            move();
+        }
 
         const tickSet = setTimeout(() => setTick(tick < 1000 ? tick + 1 : 0), tickrate);
         if(paused) {
@@ -162,13 +174,13 @@ function PlayScreen({setScreen}) {
     useEffect(rerender,[tick]);
     
     useEffect(() => {
-        verticalMove("#background", y, tickrate);
-        verticalMove(".entity-container", y, tickrate);
+        verticalMove("#background", y, tickrate * 2);
+        verticalMove(".entity-container", y, tickrate * 2);
     }, [y]);
 
     useEffect(() => {
-        horizontalMove("#background", x, tickrate);
-        horizontalMove(".entity-container", x, tickrate);
+        horizontalMove("#background", x, tickrate * 2);
+        horizontalMove(".entity-container", x, tickrate * 2);
     }, [x]);
 
     const pause = function() {

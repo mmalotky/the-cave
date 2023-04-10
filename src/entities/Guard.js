@@ -1,10 +1,8 @@
-import { useState } from "react";
 import "./Guard.css";
 
-function Guard({init}) {
-    const [state, setState] = useState(init);
+function Guard({x, y, id}) {
 
-    return <div className="guard-entity entity" style={state}/>
+    return <div id={id} className="guard-entity entity" style={{left:x+"rem", top:y+"rem"}}/>
 }
 
 export default Guard;

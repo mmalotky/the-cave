@@ -1,10 +1,7 @@
-import { useState } from "react";
 import "./Door.css";
 
-function Door({init}) {
-    const [state, setState] = useState(init);
-
-    return <div className="door-entity entity" style={state}/>
+function Door({x, y, id}) {
+    return <div id={id} className="door-entity entity" style={{left:x+"rem", top:y+"rem"}}/>
 }
 
 export default Door;
