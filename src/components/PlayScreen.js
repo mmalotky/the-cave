@@ -54,7 +54,7 @@ function PlayScreen({setScreen}) {
     }, [keylogger]);
 
     const checkEntities = function(x, y) {
-        return entities.find(e => e.x === x + 16 && e.y === y + 24);
+        return entities.find(e => e.x === -x + 32 && e.y === -y + 16);
     }
 
     const interact = function() {

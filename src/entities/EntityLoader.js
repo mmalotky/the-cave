@@ -1,6 +1,7 @@
 import { useEffect } from "react";
-import Door from "./Door"
-import "./EntityLoader.css"
+import Door from "./Door";
+import Guard from "./Guard";
+import "./EntityLoader.css";
 
 function EntityLoader(props) {
 
@@ -13,11 +14,19 @@ function EntityLoader(props) {
                         el:<Door id="door123" init={{x: "24rem", y: "20rem"}} key="door123"/>,
                         x:24,
                         y:20
+                    },
+                    {
+                        id:"guard1",
+                        el:<Guard id="guard1" init={{x: "15rem", y: "10rem"}} key="guard1"/>,
+                        x:15,
+                        y:10
                     }
                 ]);
                 break;
             case "Test2":
-                props.setEntities([]);
+                props.setEntities([
+                    
+                ]);
                 break;
         };
     }, [props.level]);
