@@ -1,6 +1,7 @@
 import TestLevel, { checkCoordsTestLevel } from "./TestLevel";
 import TestLevel2, { checkCoordsTestLevel2 } from "./TestLevel2";
 
+//return map information from coordinates based on level
 export function checkCoords(level, x, y) {
     switch(level) {
         case "Test":
@@ -10,6 +11,7 @@ export function checkCoords(level, x, y) {
     }
 }
 
+//sets the player's starting coordinates for a level
 export function startingCoords(level) {
     switch(level) {
         case "Test":
@@ -19,6 +21,7 @@ export function startingCoords(level) {
     }
 }
 
+//return the background wallpaper element for the level
 function LevelLoader({level}) {
     switch(level) {
         case "Test":

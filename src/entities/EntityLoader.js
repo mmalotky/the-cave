@@ -5,6 +5,7 @@ import "./EntityLoader.css";
 
 function EntityLoader(props) {
 
+    //each level, load entity list
     useEffect(() => {
         switch(props.level) {
             case "Test":
@@ -34,6 +35,7 @@ function EntityLoader(props) {
         };
     }, [props.level]);
 
+    //loader is static while the container moves to reposition entities according to player position
     return (
         <div className="entity-loader">
             <div className="entity-container">

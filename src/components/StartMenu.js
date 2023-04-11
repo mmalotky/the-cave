@@ -2,6 +2,9 @@ import { fadeOut } from "../animations/ComponentAnimations";
 import "./Menu.css"
 import PlayScreen from "./PlayScreen";
 
+//options: start game
+
+//todo: load save file, settings?
 function StartMenu({setScreen}) {
     const start = function(evt) {
         evt.preventDefault();

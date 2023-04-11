@@ -23,7 +23,7 @@ function PlayScreen({setScreen}) {
     const [entities, setEntities] = useState([]);
 
     const [tick, setTick] = useState(0);
-    const tickrate = 200; //ms
+    const tickrate = 200; //ms   sets the refresh rate and gamespeed
     const [paused, setPaused] = useState(false);
 
     const [render, setRender] = useState([
@@ -38,6 +38,7 @@ function PlayScreen({setScreen}) {
         fadeIn(".play-screen", tickrate*2);
     }, []);
 
+    //set controls from the keylogger
     useEffect(() => {
         if(render[render.length - 1].key !== "pauseMenu") {
             if(keylogger.includes('Escape')) {
@@ -54,10 +55,13 @@ function PlayScreen({setScreen}) {
         }
     }, [keylogger]);
 
+    //search coordinates for entities
     const checkEntities = function(x, y) {
         return entities.find(e => e.x === -x + 32 && e.y === -y + 16);
     }
 
+    //handle entity movement
+    //todo: update other entity states?
     const updateEntities = function() {
         let newEntities = [...entities];
         newEntities.forEach(entity => {
@@ -68,6 +72,7 @@ function PlayScreen({setScreen}) {
         setEntities(newEntities);
     }
 
+    //check adjacent facing tile for entities and map features
     const interact = function() {
         let frontY; 
         switch(face) {
@@ -101,6 +106,7 @@ function PlayScreen({setScreen}) {
         }
     }
 
+    //handle player movement
     const move = function() {
         let newY = y;
         let newX = x;
@@ -134,6 +140,7 @@ function PlayScreen({setScreen}) {
         }
     }
 
+    //rerender facing
     useEffect(() => {
         const newAvatar = <PlayerAvatar face={face} key="playerAvatar"/>;
         let newRender = [...render];
@@ -141,6 +148,7 @@ function PlayScreen({setScreen}) {
         setRender(newRender);
     }, [face]);
 
+    //load a new level
     useEffect(() => {
         const start = startingCoords(level);
         setX(start.x);
@@ -153,6 +161,7 @@ function PlayScreen({setScreen}) {
         setRender(newRender);
     }, [level]);
 
+    //rerender entities
     useEffect(() => {
         const newEntities = <EntityLoader level={level} entities={entities} setEntities={setEntities} key="entityLoader"/>;
         let newRender = [...render];
@@ -160,6 +169,7 @@ function PlayScreen({setScreen}) {
         setRender(newRender);
     }, [entities]);
 
+    //sets rerender to tickrate and recalls functions on each tick
     const rerender = function() {
         if(tick % 2 == 0 && entities.length > 0) {
             updateEntities();
@@ -176,6 +186,8 @@ function PlayScreen({setScreen}) {
 
     useEffect(rerender,[tick]);
     
+    //rerender player x and y movement
+
     useEffect(() => {
         verticalMove("#background", y, tickrate * 2);
         verticalMove(".entity-container", y, tickrate * 2);
@@ -186,6 +198,7 @@ function PlayScreen({setScreen}) {
         horizontalMove(".entity-container", x, tickrate * 2);
     }, [x]);
 
+    //halt the game and open the pause menu
     const pause = function() {
         setPaused(true);
         let newRender = [...render];
@@ -193,6 +206,7 @@ function PlayScreen({setScreen}) {
         setRender(newRender);
     }
 
+    //continue the game if the player unpauses
     const unpause = function() {
         let newRender = [...render];
         if(render[render.length - 1].key === "pauseMenu") {

@@ -2,6 +2,12 @@ import { fadeOut } from "../animations/ComponentAnimations";
 import "./Menu.css"
 import StartMenu from "./StartMenu";
 
+//should overlay the gamescreen, pause the game and controls
+
+//options: return to game, exit to start menu
+
+//todo: save?
+
 function PauseMenu({unpause, setScreen}) {
     const resume = function(evt) {
         evt.preventDefault();
