@@ -5,8 +5,9 @@ import PlayerAvatar from "./PlayerAvatar";
 import useKeylogger from "../hooks/useKeylogger";
 import PauseMenu from "./PauseMenu";
 import LevelLoader, { checkCoords, startingCoords } from "../levels/LevelLoader";
-import EntityLoader from "../entities/EntityLoader"
+import EntityLoader from "../entities/EntityLoader";
 import { entityMovement } from "../entities/entityMovement";
+import Message from "./Message";
 
 function PlayScreen({setScreen}) {
     const [level, setLevel] = useState("Test");
@@ -98,6 +99,11 @@ function PlayScreen({setScreen}) {
             setX(0);
             setY(0);
         }
+        if(adjacent > 2 && render[render.length - 1].key !== "message") {
+            let newRender = [...render];
+            newRender.push(<Message text="test" key="message"/>);
+            setRender(newRender);
+        }
 
         if(entity !== undefined) {
             let newEntities = [...entities];
@@ -130,6 +136,12 @@ function PlayScreen({setScreen}) {
 
     //handle player movement
     const move = function() {
+        if((up || down || left || right) && render[render.length - 1].key === "message") {
+            let newRender = [...render];
+            newRender.pop();
+            setRender(newRender);
+        }
+
         let newY = y;
         let newX = x;
         
