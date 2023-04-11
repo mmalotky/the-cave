@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import Door from "./Door";
 import Guard from "./Guard";
+import Chest from "./Chest";
 import "./EntityLoader.css";
 
 function EntityLoader(props) {
@@ -29,7 +30,31 @@ function EntityLoader(props) {
                 break;
             case "Test2":
                 props.setEntities([
-                    
+                    {
+                        id:"door124",
+                        x:17,
+                        y:26,
+                        el:<Door x={17} y={26} id="door124" key="door124"/>,
+                        unfixed:false
+                    },
+                    {
+                        id:"door125",
+                        x:24,
+                        y:34,
+                        el:<Door x={24} y={34} id="door125" key="door125"/>,
+                        unfixed:true
+                    },
+                    {
+                        id:"chest111",
+                        x:47,
+                        y:8,
+                        el:<Chest x={47} y={8} id="chest111" key="chest111"/>,
+                        unfixed:false,
+                        drop: {
+                            name:"Key",
+                            unlocks:"door124"
+                        }
+                    }
                 ]);
                 break;
         };

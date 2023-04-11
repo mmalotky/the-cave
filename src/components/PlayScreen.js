@@ -21,9 +21,10 @@ function PlayScreen({setScreen}) {
     const [x, setX] = useState(0);
     
     const [entities, setEntities] = useState([]);
+    const [inventory, setInventory] = useState([]);
 
     const [tick, setTick] = useState(0);
-    const tickrate = 200; //ms   sets the refresh rate and gamespeed
+    const tickrate = 100; //ms   sets the refresh rate and gamespeed
     const [paused, setPaused] = useState(false);
 
     const [render, setRender] = useState([
@@ -98,10 +99,24 @@ function PlayScreen({setScreen}) {
             setY(0);
         }
 
-        if(entity !== undefined && entity.unfixed) {
+        if(entity !== undefined) {
             let newEntities = [...entities];
             const index = newEntities.findIndex(p => p.id === entity.id);
-            newEntities.splice(index, index+1);
+
+            if(entity.drop) {
+                let newInventory = [...inventory];
+                newInventory.push(entity.drop);
+                setInventory(newInventory);
+
+                let newEntity = {...entity};
+                delete newEntity.drop;
+                newEntities[index] = newEntity;
+            }
+            
+            if(entity.unfixed) {
+                newEntities.splice(index, 1);
+            }
+            
             setEntities(newEntities);
         }
     }
