@@ -102,11 +102,13 @@ function PlayScreen({setScreen}) {
         if(entity !== undefined) {
             let newEntities = [...entities];
             const index = newEntities.findIndex(p => p.id === entity.id);
+            
+            let newInventory = [...inventory];
+            const keyIndex = inventory.findIndex(i => i.unlocks === entity.id);
+            console.log(keyIndex)
 
             if(entity.drop) {
-                let newInventory = [...inventory];
                 newInventory.push(entity.drop);
-                setInventory(newInventory);
 
                 let newEntity = {...entity};
                 delete newEntity.drop;
@@ -116,8 +118,13 @@ function PlayScreen({setScreen}) {
             if(entity.unfixed) {
                 newEntities.splice(index, 1);
             }
+            else if(keyIndex !== -1) {
+                newEntities.splice(index, 1);
+                newInventory.splice(keyIndex, 1);
+            }
             
             setEntities(newEntities);
+            setInventory(newInventory);
         }
     }
 
