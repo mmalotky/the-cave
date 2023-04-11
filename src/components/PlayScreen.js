@@ -126,10 +126,10 @@ function PlayScreen({setScreen}) {
             setX(newX);
             setY(newY);
         }
-        else if(checkCoords(level, newX+18, y+34) <= 0 && !checkEntities(newX, y) === undefined) {
+        else if(checkCoords(level, newX+18, y+34) <= 0 && checkEntities(newX, y) === undefined) {
             setX(newX);
         }
-        else if(checkCoords(level, x+18, newY+34) <= 0 && !checkEntities(x, newY) === undefined) {
+        else if(checkCoords(level, x+18, newY+34) <= 0 && checkEntities(x, newY) === undefined) {
             setY(newY);
         }
     }
