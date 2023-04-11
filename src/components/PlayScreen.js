@@ -62,7 +62,7 @@ function PlayScreen({setScreen}) {
         let newEntities = [...entities];
         newEntities.forEach(entity => {
             if(entity.movement) {
-                entityMovement(entity, tickrate);
+                entityMovement(entity, x, y, tickrate);
             }
         });
         setEntities(newEntities);
