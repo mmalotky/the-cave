@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./PlayScreen.css";
-import { fadeIn, horizontalMove, verticalMove } from "../animations/ComponentAnimations";
+import { fadeIn, fadeOut, horizontalMove, verticalMove } from "../animations/ComponentAnimations";
 import PlayerAvatar from "./PlayerAvatar";
 import useKeylogger from "../hooks/useKeylogger";
 import PauseMenu from "./PauseMenu";
@@ -35,10 +35,6 @@ function PlayScreen({setScreen}) {
     ]);
 
     const keylogger = useKeylogger();
-
-    useEffect(() => {
-        fadeIn(".play-screen", tickrate*2);
-    }, []);
 
     //set controls from the keylogger
     useEffect(() => {
@@ -195,15 +191,19 @@ function PlayScreen({setScreen}) {
 
     //load a new level
     useEffect(() => {
-        const start = startingCoords(level);
-        setX(start.x);
-        setY(start.y);
-        const newLevel = <LevelLoader level={level} key="levelLoader"/>;
-        const newEntities = <EntityLoader level={level} entities={entities} setEntities={setEntities} key="entityLoader"/>;
-        let newRender = [...render];
-        newRender[newRender.findIndex(el => el.key === "levelLoader")] = newLevel;
-        newRender[newRender.findIndex(el => el.key === "entityLoader")] = newEntities;
-        setRender(newRender);
+        fadeOut(".play-screen");
+        setTimeout(() => {
+            const start = startingCoords(level);
+            setX(start.x);
+            setY(start.y);
+            const newLevel = <LevelLoader level={level} key="levelLoader"/>;
+            const newEntities = <EntityLoader level={level} entities={entities} setEntities={setEntities} key="entityLoader"/>;
+            let newRender = [...render];
+            newRender[newRender.findIndex(el => el.key === "levelLoader")] = newLevel;
+            newRender[newRender.findIndex(el => el.key === "entityLoader")] = newEntities;
+            setRender(newRender);
+            fadeIn(".play-screen", tickrate*2);
+        }, level === "Test" ? 0 : 1000);
     }, [level]);
 
     //rerender entities

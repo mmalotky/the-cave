@@ -11,9 +11,11 @@ export function checkCoords(level, x, y) {
     }
 }
 
+//return a message that is displayed by a map feature
 export function getMessage(level, key) {
     let messageList = [];
     let index = key - 3;
+    
     switch(level) {
         case "Test":
             messageList = [
