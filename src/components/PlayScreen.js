@@ -112,7 +112,6 @@ function PlayScreen({setScreen}) {
             
             let newInventory = [...inventory];
             const keyIndex = inventory.findIndex(i => i.unlocks === entity.id);
-            console.log(keyIndex)
 
             if(entity.drop) {
                 newInventory.push(entity.drop);
@@ -120,6 +119,17 @@ function PlayScreen({setScreen}) {
                 let newEntity = {...entity};
                 delete newEntity.drop;
                 newEntities[index] = newEntity;
+            }
+
+            if(entity.message  && render[render.length - 1].key !== "message") {
+                let newRender = [...render];
+                const message = entity.message[entity.message.length - 1];
+                newRender.push(<Message text={message} key="message"/>);
+                setRender(newRender);
+
+                if(entity.message.length > 1) {
+                    entity.message.pop();
+                }
             }
             
             if(entity.unfixed) {

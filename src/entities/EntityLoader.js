@@ -24,7 +24,8 @@ function EntityLoader(props) {
                         y:10,
                         el:<Guard x={15} y={10} id="guard1" key="guard1"/>,
                         unfixed:false,
-                        movement:"uuuullllddddrrrr"
+                        movement:"uuuullllddddrrrr",
+                        message:["Move along, nothing to see here."]
                     }
                 ]);
                 break;
@@ -53,7 +54,8 @@ function EntityLoader(props) {
                         drop: {
                             name:"Key",
                             unlocks:"door124"
-                        }
+                        },
+                        message: ["The chest is empty", "You found a key"]
                     }
                 ]);
                 break;
