@@ -39,13 +39,17 @@ function PlayScreen({setScreen}) {
     //set controls from the keylogger
     useEffect(() => {
         if(render[render.length - 1].key !== "pauseMenu") {
+            //esc to pause menu
             if(keylogger.includes('Escape')) {
                 pause();
             }
+
+            //f to interact
             if(keylogger.includes('f')) {
                 interact();
             }
 
+            //move with wsad
             setRight(keylogger.includes('d') && !keylogger.includes('a'));
             setLeft(keylogger.includes('a') && !keylogger.includes('d'));
             setUp(keylogger.includes('w') && !keylogger.includes('s'));
@@ -70,8 +74,8 @@ function PlayScreen({setScreen}) {
         setEntities(newEntities);
     }
 
-    //check adjacent facing tile for entities and map features
-    const interact = function() {
+    //get coords in front of player
+    const getFront = function() {
         let frontY; 
         switch(face) {
             case "face-up": frontY = y+35; break;
@@ -86,10 +90,11 @@ function PlayScreen({setScreen}) {
             default: frontX = x+18; break;
         }
 
-        const adjacent = checkCoords(level, frontX, frontY);
-        const entity = checkEntities(frontX - 18, frontY - 34);
-        
-        
+        return {frontX, frontY};
+    }
+
+    //interact with map features
+    const mapInteraction = function(adjacent) {
         if(adjacent === 2) {
             fadeOut(".play-screen");
             setTimeout(() => setLevel("Test2"), 1000);
@@ -100,44 +105,56 @@ function PlayScreen({setScreen}) {
             newRender.push(<Message text={message} key="message"/>);
             setRender(newRender);
         }
+    }
 
-        if(entity !== undefined) {
-            let newEntities = [...entities];
-            const index = newEntities.findIndex(p => p.id === entity.id);
-            
-            let newInventory = [...inventory];
-            const keyIndex = inventory.findIndex(i => i.unlocks === entity.id);
+    //interact with entities
+    const entityInteraction = function(entity) {
+        let newEntities = [...entities];
+        const index = newEntities.findIndex(p => p.id === entity.id);
+        let newInventory = [...inventory];
+        const keyIndex = inventory.findIndex(i => i.unlocks === entity.id);
 
-            if(entity.drop) {
-                newInventory.push(entity.drop);
-
-                let newEntity = {...entity};
-                delete newEntity.drop;
-                newEntities[index] = newEntity;
-            }
-
-            if(entity.message  && render[render.length - 1].key !== "message") {
-                let newRender = [...render];
-                const message = entity.message[entity.message.length - 1];
-                newRender.push(<Message text={message} key="message"/>);
-                setRender(newRender);
-
-                if(entity.message.length > 1) {
-                    entity.message.pop();
-                }
-            }
-            
-            if(entity.unfixed) {
-                newEntities.splice(index, 1);
-            }
-            else if(keyIndex !== -1) {
-                newEntities.splice(index, 1);
-                newInventory.splice(keyIndex, 1);
-            }
-            
-            setEntities(newEntities);
-            setInventory(newInventory);
+        if(entity.drop) {
+            newInventory.push(entity.drop);
+            let newEntity = {...entity};
+            delete newEntity.drop;
+            newEntities[index] = newEntity;
         }
+
+        if(entity.message  && render[render.length - 1].key !== "message") {
+            let newRender = [...render];
+            const message = entity.message[entity.message.length - 1];
+            newRender.push(<Message text={message} key="message"/>);
+            setRender(newRender);
+            
+            if(entity.message.length > 1) {
+                entity.message.pop();
+            }
+        }
+        
+        if(entity.unfixed) {
+            newEntities.splice(index, 1);
+        }
+        else if(keyIndex !== -1) {
+            newEntities.splice(index, 1);
+            newInventory.splice(keyIndex, 1);
+        }
+        
+        setEntities(newEntities);
+        setInventory(newInventory);
+    }
+
+    //interact with nearby entities and map features
+    const interact = function() {
+        const front = getFront();
+
+        const entity = checkEntities(front.frontX - 18, front.frontY - 34);
+        if(entity !== undefined) {
+            entityInteraction(entity);
+        }
+
+        const adjacent = checkCoords(level, front.frontX, front.frontY);
+        mapInteraction(adjacent);
     }
 
     //handle player movement
