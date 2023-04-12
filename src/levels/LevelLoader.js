@@ -11,6 +11,26 @@ export function checkCoords(level, x, y) {
     }
 }
 
+export function getMessage(level, key) {
+    let messageList = [];
+    let index = key - 3;
+    switch(level) {
+        case "Test":
+            messageList = [
+                "Not Here",
+                "Wrong Castle"
+            ]
+            break;
+        case "Test2":
+            messageList = [
+
+            ]
+            break;
+    }
+
+    return messageList[index];
+}
+
 //sets the player's starting coordinates for a level
 export function startingCoords(level) {
     switch(level) {

@@ -4,7 +4,7 @@ import { fadeIn, horizontalMove, verticalMove } from "../animations/ComponentAni
 import PlayerAvatar from "./PlayerAvatar";
 import useKeylogger from "../hooks/useKeylogger";
 import PauseMenu from "./PauseMenu";
-import LevelLoader, { checkCoords, startingCoords } from "../levels/LevelLoader";
+import LevelLoader, { checkCoords, getMessage, startingCoords } from "../levels/LevelLoader";
 import EntityLoader from "../entities/EntityLoader";
 import { entityMovement } from "../entities/entityMovement";
 import Message from "./Message";
@@ -101,7 +101,8 @@ function PlayScreen({setScreen}) {
         }
         if(adjacent > 2 && render[render.length - 1].key !== "message") {
             let newRender = [...render];
-            newRender.push(<Message text="test" key="message"/>);
+            const message = getMessage(level, adjacent);
+            newRender.push(<Message text={message} key="message"/>);
             setRender(newRender);
         }
 
