@@ -91,9 +91,8 @@ function PlayScreen({setScreen}) {
         
         
         if(adjacent === 2) {
-            setLevel("Test2");
-            setX(0);
-            setY(0);
+            fadeOut(".play-screen");
+            setTimeout(() => setLevel("Test2"), 1000);
         }
         if(adjacent > 2 && render[render.length - 1].key !== "message") {
             let newRender = [...render];
@@ -191,19 +190,16 @@ function PlayScreen({setScreen}) {
 
     //load a new level
     useEffect(() => {
-        fadeOut(".play-screen");
-        setTimeout(() => {
-            const start = startingCoords(level);
-            setX(start.x);
-            setY(start.y);
-            const newLevel = <LevelLoader level={level} key="levelLoader"/>;
-            const newEntities = <EntityLoader level={level} entities={entities} setEntities={setEntities} key="entityLoader"/>;
-            let newRender = [...render];
-            newRender[newRender.findIndex(el => el.key === "levelLoader")] = newLevel;
-            newRender[newRender.findIndex(el => el.key === "entityLoader")] = newEntities;
-            setRender(newRender);
-            fadeIn(".play-screen", tickrate*2);
-        }, level === "Test" ? 0 : 1000);
+        const start = startingCoords(level);
+        setX(start.x);
+        setY(start.y);
+        const newLevel = <LevelLoader level={level} key="levelLoader"/>;
+        const newEntities = <EntityLoader level={level} entities={entities} setEntities={setEntities} key="entityLoader"/>;
+        let newRender = [...render];
+        newRender[newRender.findIndex(el => el.key === "levelLoader")] = newLevel;
+        newRender[newRender.findIndex(el => el.key === "entityLoader")] = newEntities;
+        setRender(newRender);
+        fadeIn(".play-screen", tickrate*2);
     }, [level]);
 
     //rerender entities
