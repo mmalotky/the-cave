@@ -25,7 +25,8 @@ function EntityLoader(props) {
                         el:<Guard x={15} y={10} id="guard1" key="guard1"/>,
                         unfixed:false,
                         movement:"uuuullllddddrrrr",
-                        message:["Move along, nothing to see here."]
+                        message:["Move along, nothing to see here."],
+                        gameover:true
                     }
                 ]);
                 break;

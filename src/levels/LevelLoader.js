@@ -20,7 +20,8 @@ export function getMessage(level, key) {
         case "Test":
             messageList = [
                 "Not Here",
-                "Wrong Castle"
+                "Wrong Castle",
+                "\"Nothing\" is here"
             ]
             break;
         case "Test2":

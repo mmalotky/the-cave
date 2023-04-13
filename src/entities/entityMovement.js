@@ -1,6 +1,6 @@
 import { horizontalMove, verticalMove } from "../animations/ComponentAnimations";
 
-export function entityMovement(entity, playerX, playerY, tickrate) {
+export function entityMovement(entity, playerX, playerY, gameOver, tickrate) {
     const step = entity.movement.charAt(0);
 
     //pause movement if an entity collides with a player
@@ -12,6 +12,9 @@ export function entityMovement(entity, playerX, playerY, tickrate) {
     switch(step) {
         case 'r':
             if(playerCollision(entity.x + 1, entity.y)) {
+                if(entity.gameover) {
+                    gameOver();
+                }
                 return;
             }
 
@@ -20,6 +23,9 @@ export function entityMovement(entity, playerX, playerY, tickrate) {
             break;
         case 'l':
             if(playerCollision(entity.x - 1, entity.y)) {
+                if(entity.gameover) {
+                    gameOver();
+                }
                 return;
             }
 
@@ -28,6 +34,9 @@ export function entityMovement(entity, playerX, playerY, tickrate) {
             break;
         case 'u':
             if(playerCollision(entity.x, entity.y - 1)) {
+                if(entity.gameover) {
+                    gameOver();
+                }
                 return;
             }
 
@@ -36,6 +45,9 @@ export function entityMovement(entity, playerX, playerY, tickrate) {
             break;
         case 'd':
             if(playerCollision(entity.x, entity.y + 1)) {
+                if(entity.gameover) {
+                    gameOver();
+                }
                 return;
             }
 

@@ -8,6 +8,7 @@ import LevelLoader, { checkCoords, getMessage, startingCoords } from "../levels/
 import EntityLoader from "../entities/EntityLoader";
 import { entityMovement } from "../entities/entityMovement";
 import Message from "./Message";
+import GameOverMenu from "./GameOverMenu";
 
 function PlayScreen({setScreen}) {
     const [level, setLevel] = useState("Test");
@@ -68,7 +69,7 @@ function PlayScreen({setScreen}) {
         let newEntities = [...entities];
         newEntities.forEach(entity => {
             if(entity.movement) {
-                entityMovement(entity, x, y, tickrate);
+                entityMovement(entity, x, y, gameOver, tickrate);
             }
         });
         setEntities(newEntities);
@@ -206,7 +207,8 @@ function PlayScreen({setScreen}) {
     }, [face]);
 
     //load a new level
-    useEffect(() => {
+
+    const loadLevel = function() {
         const start = startingCoords(level);
         setX(start.x);
         setY(start.y);
@@ -217,7 +219,9 @@ function PlayScreen({setScreen}) {
         newRender[newRender.findIndex(el => el.key === "entityLoader")] = newEntities;
         setRender(newRender);
         fadeIn(".play-screen", tickrate*2);
-    }, [level]);
+    }
+
+    useEffect(loadLevel, [level]);
 
     //rerender entities
     useEffect(() => {
@@ -229,10 +233,10 @@ function PlayScreen({setScreen}) {
 
     //sets rerender to tickrate and recalls functions on each tick
     const rerender = function() {
-        if(tick % 2 == 0 && entities.length > 0) {
+        if(tick % 2 === 0 && entities.length > 0) {
             updateEntities();
         }
-        else if (tick % 2 == 1){    
+        else if (tick % 2 === 1){    
             move();
         }
 
@@ -267,11 +271,19 @@ function PlayScreen({setScreen}) {
     //continue the game if the player unpauses
     const unpause = function() {
         let newRender = [...render];
-        if(render[render.length - 1].key === "pauseMenu") {
+        if(render[render.length - 1].key === "pauseMenu" || render[render.length - 1].key === "pauseMenu") {
             newRender.pop();
         }
         setRender(newRender);
         setPaused(false);
+    }
+
+    //pause and display game over menu
+    const gameOver = function() {
+        setPaused(true);
+        let newRender = [...render];
+        newRender.push(<GameOverMenu key="gameOverMenu" unpause={unpause} loadLevel={loadLevel} setScreen={setScreen}/>);
+        setRender(newRender);
     }
 
     useEffect(() => {
