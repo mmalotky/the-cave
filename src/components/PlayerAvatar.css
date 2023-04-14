@@ -1,10 +1,21 @@
 .player-avatar {
-    background-color: red;
+    background-image: url("../media/characterAvatar/characterFront.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     width: 1rem;
     height: 1rem;
     position: absolute;
     left: 50%;
     top: 50%;
+}
+
+.interact {
+    background-image: url("../media/characterAvatar/characterFrontInteract.png");
+}
+
+.walking {
+    background-image: url("../media/characterAvatar/characterFrontWalking.gif");
 }
 
 .face-down {

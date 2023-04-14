@@ -18,12 +18,14 @@ function PlayScreen({setScreen}) {
     const [left, setLeft] = useState(false);
     const [up, setUp] = useState(false);
     const [down, setDown] = useState(false);
+    const [moving, setMoving] = useState(false);
 
     const [y, setY] = useState(0);
     const [x, setX] = useState(0);
     
     const [entities, setEntities] = useState([]);
     const [inventory, setInventory] = useState([]);
+    const [interacting, setInteracting] = useState(false);
 
     const [tick, setTick] = useState(0);
     const tickrate = 100; //ms   sets the refresh rate and gamespeed
@@ -31,7 +33,7 @@ function PlayScreen({setScreen}) {
 
     const [render, setRender] = useState([
         <LevelLoader level={level} key="levelLoader"/>,
-        <PlayerAvatar face={face} key="playerAvatar"/>,
+        <PlayerAvatar face={face} interacting={interacting} moving={moving} key="playerAvatar"/>,
         <EntityLoader level={level} entities={entities} setEntities={setEntities} key="entityLoader"/>
     ]);
 
@@ -147,6 +149,7 @@ function PlayScreen({setScreen}) {
 
     //interact with nearby entities and map features
     const interact = function() {
+        setInteracting(true);
         const front = getFront();
 
         const entity = checkEntities(front.frontX - 18, front.frontY - 34);
@@ -156,6 +159,7 @@ function PlayScreen({setScreen}) {
 
         const adjacent = checkCoords(level, front.frontX, front.frontY);
         mapInteraction(adjacent);
+        setTimeout(() => setInteracting(false), 1000);
     }
 
     //handle player movement
@@ -171,19 +175,15 @@ function PlayScreen({setScreen}) {
         
         if(up) {
             newY++;
-            setFace("face-up");
         }
         if(down) {
             newY--;
-            setFace("face-down");
         }
         if(right) {
             newX--;
-            setFace("face-right");
         }
         if(left) {
             newX++;
-            setFace("face-left");
         }
 
         if(checkCoords(level, newX+18, newY+34) <= 0 && checkEntities(newX, newY) === undefined) {
@@ -198,13 +198,36 @@ function PlayScreen({setScreen}) {
         }
     }
 
-    //rerender facing
+    //rerender avatar
     useEffect(() => {
-        const newAvatar = <PlayerAvatar face={face} key="playerAvatar"/>;
+        const newAvatar = <PlayerAvatar face={face} interacting={interacting} moving={moving} key="playerAvatar"/>;
         let newRender = [...render];
         newRender[newRender.findIndex(el => el.key === "playerAvatar")] = newAvatar;
         setRender(newRender);
-    }, [face]);
+    }, [face, moving, interacting]);
+
+    //set avatar condition
+    useEffect(() => {
+        if(right) {
+            setFace("face-right");
+            setMoving(true);
+        }
+        else if(left) {
+            setFace("face-left");
+            setMoving(true);
+        }
+        else if(up) {
+            setFace("face-up");
+            setMoving(true);
+        }
+        else if(down) {
+            setFace("face-down");
+            setMoving(true);
+        }
+        else {
+            setMoving(false);
+        }
+    }, [up, down, left, right]);
 
     //load a new level
 
