@@ -22,7 +22,7 @@ export function fadeIn(el, delay) {
 //set y position of element, rate in ms
 export function verticalMove(el, y, rate) {
     gsap.to(el, {
-        top: y * rem,
+        top: y * 2 * rem,
         ease:"linear",
         duration:rate/1000
     })
@@ -31,7 +31,7 @@ export function verticalMove(el, y, rate) {
 //set x position of element, rate in ms
 export function horizontalMove(el, x, rate) {
     gsap.to(el, {
-        left: x * rem,
+        left: x * 2 * rem,
         ease:"linear",
         duration:rate/1000
     })

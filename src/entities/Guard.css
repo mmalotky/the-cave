@@ -1,6 +1,6 @@
 .guard-entity {
-    height: 1rem;
-    width: 1rem;
+    height: 2rem;
+    width: 2rem;
     background-color: gray;
     position: absolute;
 }

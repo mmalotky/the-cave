@@ -5,9 +5,9 @@ import TestLevel2, { checkCoordsTestLevel2 } from "./TestLevel2";
 export function checkCoords(level, x, y) {
     switch(level) {
         case "Test":
-            return checkCoordsTestLevel(x, y);
+            return checkCoordsTestLevel(x + 34, y + 42);
         case "Test2":
-            return checkCoordsTestLevel2(x, y);
+            return checkCoordsTestLevel2(x + 34, y + 42);
     }
 }
 
@@ -38,9 +38,9 @@ export function getMessage(level, key) {
 export function startingCoords(level) {
     switch(level) {
         case "Test":
-            return {x:8, y:8};
+            return {x:-7, y:0};
         case "Test2":
-            return {x:30, y:14};
+            return {x:14, y:6};
     }
 }
 

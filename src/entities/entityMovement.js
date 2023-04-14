@@ -5,7 +5,7 @@ export function entityMovement(entity, playerX, playerY, gameOver, tickrate) {
 
     //pause movement if an entity collides with a player
     const playerCollision = function(x, y) {
-        return playerX === 32-x && playerY === 16-y;
+        return playerX === 16-x && playerY === 8-y;
     }
     
     //change entity position based on the current step in the movement string

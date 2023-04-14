@@ -62,7 +62,7 @@ function PlayScreen({setScreen}) {
 
     //search coordinates for entities
     const checkEntities = function(x, y) {
-        return entities.find(e => e.x === -x + 32 && e.y === -y + 16);
+        return entities.find(e => e.x === 16 - x && e.y === 8 - y);
     }
 
     //handle entity movement
@@ -81,16 +81,16 @@ function PlayScreen({setScreen}) {
     const getFront = function() {
         let frontY; 
         switch(face) {
-            case "face-up": frontY = y+35; break;
-            case "face-down": frontY =  y+33; break;
-            default: frontY =  y+34; break;
+            case "face-up": frontY = y+1; break;
+            case "face-down": frontY =  y-1; break;
+            default: frontY =  y; break;
         }
 
         let frontX;
         switch(face) {
-            case "face-left": frontX = x+19; break;
-            case "face-right": frontX = x+17; break;
-            default: frontX = x+18; break;
+            case "face-left": frontX = x+1; break;
+            case "face-right": frontX = x-1; break;
+            default: frontX = x; break;
         }
 
         return {frontX, frontY};
@@ -152,7 +152,7 @@ function PlayScreen({setScreen}) {
         setInteracting(true);
         const front = getFront();
 
-        const entity = checkEntities(front.frontX - 18, front.frontY - 34);
+        const entity = checkEntities(front.frontX, front.frontY);
         if(entity !== undefined) {
             entityInteraction(entity);
         }
@@ -186,14 +186,14 @@ function PlayScreen({setScreen}) {
             newX++;
         }
 
-        if(checkCoords(level, newX+18, newY+34) <= 0 && checkEntities(newX, newY) === undefined) {
+        if(checkCoords(level, newX, newY) <= 0 && checkEntities(newX, newY) === undefined) {
             setX(newX);
             setY(newY);
         }
-        else if(checkCoords(level, newX+18, y+34) <= 0 && checkEntities(newX, y) === undefined) {
+        else if(checkCoords(level, newX, y) <= 0 && checkEntities(newX, y) === undefined) {
             setX(newX);
         }
-        else if(checkCoords(level, x+18, newY+34) <= 0 && checkEntities(x, newY) === undefined) {
+        else if(checkCoords(level, x, newY) <= 0 && checkEntities(x, newY) === undefined) {
             setY(newY);
         }
     }
