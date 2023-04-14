@@ -236,6 +236,8 @@ function PlayScreen({setScreen}) {
         setX(start.x);
         setY(start.y);
         const newLevel = <LevelLoader level={level} key="levelLoader"/>;
+
+        //Error: not reloading entities
         const newEntities = <EntityLoader level={level} entities={entities} setEntities={setEntities} key="entityLoader"/>;
         let newRender = [...render];
         newRender[newRender.findIndex(el => el.key === "levelLoader")] = newLevel;
