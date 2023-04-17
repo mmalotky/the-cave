@@ -10,19 +10,12 @@
     top: 50%;
 }
 
-.interact {
-    background-image: url("../media/characterAvatar/characterFrontInteract.png");
-}
-
-.walking {
-    background-image: url("../media/characterAvatar/characterFrontWalking.gif");
-}
-
 .face-down {
     border-bottom-style: double;
 }
 
 .face-up {
+    background-image: url("../media/characterAvatar/characterBack.png");
     border-top-style: double;
 }
 
@@ -32,4 +25,20 @@
 
 .face-right {
     border-right-style: double;
+}
+
+.interact.face-down {
+    background-image: url("../media/characterAvatar/characterFrontInteract.png");
+}
+
+.walking.face-down {
+    background-image: url("../media/characterAvatar/characterFrontWalking.gif");
+}
+
+.interact.face-up {
+    background-image: url("../media/characterAvatar/characterBackInteract.png");
+}
+
+.walking.face-up {
+    background-image: url("../media/characterAvatar/characterBackWalking.gif");
 }
