@@ -24,6 +24,7 @@
 }
 
 .face-right {
+    background-image: url("../media/characterAvatar/characterRight.png");
     border-right-style: double;
 }
 
@@ -41,4 +42,12 @@
 
 .walking.face-up {
     background-image: url("../media/characterAvatar/characterBackWalking.gif");
+}
+
+.interact.face-right {
+    background-image: url("../media/characterAvatar/characterRightInteract.png");
+}
+
+.walking.face-right {
+    background-image: url("../media/characterAvatar/characterRightWalking.gif");
 }
