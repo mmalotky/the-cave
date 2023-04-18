@@ -5,7 +5,7 @@ import PlayerAvatar from "./PlayerAvatar";
 import useKeylogger from "../hooks/useKeylogger";
 import PauseMenu from "./PauseMenu";
 import LevelLoader, { checkCoords, getMessage, startingCoords } from "../levels/LevelLoader";
-import EntityLoader from "../entities/EntityLoader";
+import EntityLoader, { initialEntities } from "../entities/EntityLoader";
 import { entityMovement } from "../entities/entityMovement";
 import Message from "./Message";
 import GameOverMenu from "./GameOverMenu";
@@ -235,14 +235,13 @@ function PlayScreen({setScreen}) {
         const start = startingCoords(level);
         setX(start.x);
         setY(start.y);
-        const newLevel = <LevelLoader level={level} key="levelLoader"/>;
 
-        //Error: not reloading entities
-        const newEntities = <EntityLoader level={level} entities={entities} setEntities={setEntities} key="entityLoader"/>;
+        const newLevel = <LevelLoader level={level} key="levelLoader"/>;
         let newRender = [...render];
         newRender[newRender.findIndex(el => el.key === "levelLoader")] = newLevel;
-        newRender[newRender.findIndex(el => el.key === "entityLoader")] = newEntities;
         setRender(newRender);
+
+        initialEntities(level, setEntities);
         fadeIn(".play-screen", tickrate*2);
     }
 
