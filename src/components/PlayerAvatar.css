@@ -11,21 +11,19 @@
 }
 
 .face-down {
-    border-bottom-style: double;
+    background-image: url("../media/characterAvatar/characterFront.png");
 }
 
 .face-up {
     background-image: url("../media/characterAvatar/characterBack.png");
-    border-top-style: double;
 }
 
 .face-left {
-    border-left-style: double;
+    background-image: url("../media/characterAvatar/characterLeft.png");
 }
 
 .face-right {
     background-image: url("../media/characterAvatar/characterRight.png");
-    border-right-style: double;
 }
 
 .interact.face-down {
@@ -50,4 +48,12 @@
 
 .walking.face-right {
     background-image: url("../media/characterAvatar/characterRightWalking.gif");
+}
+
+.interact.face-left {
+    background-image: url("../media/characterAvatar/characterLeftInteract.png");
+}
+
+.walking.face-left {
+    background-image: url("../media/characterAvatar/characterLeftWalking.gif");
 }
