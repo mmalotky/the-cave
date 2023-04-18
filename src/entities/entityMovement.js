@@ -1,4 +1,5 @@
 import { horizontalMove, verticalMove } from "../animations/ComponentAnimations";
+import { checkCoords } from "../levels/LevelLoader";
 
 export function entityMovement(entity, playerX, playerY, gameOver, tickrate) {
     const step = entity.movement.charAt(0);
@@ -58,4 +59,58 @@ export function entityMovement(entity, playerX, playerY, gameOver, tickrate) {
 
     //run the movement string like a tape
     entity.movement = entity.movement.substring(1) + step;
+}
+
+
+export function entityView(entity, playerX, playerY, level) {
+    //estabilsh direction and range of view
+    const direction = entity.direction.charAt(0);
+    entity.direction = entity.direction.substring(1) + direction;
+    const range = entity.range;
+
+    //check direction for player
+    switch(direction) {
+        case 'r':
+            for(let x = entity.x; x < entity.x + range; x++) {
+                if(checkCoords(level, 16-x, 8-entity.y) != 0) {
+                    break;
+                }
+                if(16-playerX === x && 8-playerY === entity.y) {
+                    return true;
+                }
+            }
+            break;
+        case 'l':
+            for(let x = entity.x; x > entity.x - range; x--) {
+                if(checkCoords(level, 16-x, 8-entity.y) != 0) {
+                    break;
+                }
+                if(16-playerX === x && 8-playerY === entity.y) {
+                    return true;
+                }
+            }
+            break;
+        case 'u':
+            for(let y = entity.y; y > entity.y - range; y--) {
+                if(checkCoords(level, 16-entity.x, 8-y) != 0) {
+                    break;
+                }
+                if(16-playerX === entity.x && 8-playerY === y) {
+                    return true;
+                }
+            }
+            break;
+        case 'd':
+            for(let y = entity.y; y < entity.x + range; y++) {
+                if(checkCoords(level, 16-entity.x, 8-y) != 0) {
+                    break;
+                }
+                if(16-playerX === entity.x && 8-playerY === y) {
+                    return true;
+                }
+            }
+            break;
+    }
+
+    return false;
 }

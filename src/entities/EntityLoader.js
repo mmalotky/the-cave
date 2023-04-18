@@ -24,6 +24,15 @@ export function initialEntities(level, setEntities) {
                     movement:"uuuullllddddrrrr",
                     message:["Move along, nothing to see here."],
                     gameover:true
+                },
+                {
+                    id:"guard2",
+                    x: 22,
+                    y: 19,
+                    el:<Guard x={22} y={19} id="guard2" key="guard2"/>,
+                    unfixed:false,
+                    movement: "rrrrllll",
+                    gameover:true
                 }
             ]);
             break;
@@ -54,6 +63,17 @@ export function initialEntities(level, setEntities) {
                         unlocks:"door124"
                     },
                     message: ["The chest is empty", "You found a key"]
+                },
+                {
+                    id:"guard3",
+                    x: 21,
+                    y: 18,
+                    el:<Guard x={21} y={18} id="guard3" key="guard3"/>,
+                    unfixed:false,
+                    movement: "rrrrllll",
+                    gameover:true,
+                    direction:"rrrrllll",
+                    range:5
                 }
             ]);
             break;

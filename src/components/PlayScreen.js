@@ -6,7 +6,7 @@ import useKeylogger from "../hooks/useKeylogger";
 import PauseMenu from "./PauseMenu";
 import LevelLoader, { checkCoords, getMessage, startingCoords } from "../levels/LevelLoader";
 import EntityLoader, { initialEntities } from "../entities/EntityLoader";
-import { entityMovement } from "../entities/entityMovement";
+import { entityMovement, entityView } from "../entities/entityMovement";
 import Message from "./Message";
 import GameOverMenu from "./GameOverMenu";
 
@@ -65,13 +65,18 @@ function PlayScreen({setScreen}) {
         return entities.find(e => e.x === 16 - x && e.y === 8 - y);
     }
 
-    //handle entity movement
-    //todo: update other entity states?
+    //handle entity movement and range
     const updateEntities = function() {
         let newEntities = [...entities];
         newEntities.forEach(entity => {
             if(entity.movement) {
                 entityMovement(entity, x, y, gameOver, tickrate);
+            }
+            if(entity.direction && entity.range) {
+                const seen = entityView(entity, x, y, level);
+                if(seen && entity.gameover) {
+                    gameOver();
+                }
             }
         });
         setEntities(newEntities);

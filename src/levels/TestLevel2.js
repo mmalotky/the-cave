@@ -57,6 +57,9 @@ const grid = [
 ]
 
 export function checkCoordsTestLevel2(x, y) {
+    if(x < 0 || y < 0 || x > grid.length || y > grid[x].length) {
+        return 1;
+    }
     return grid[x][y];
 }
 
