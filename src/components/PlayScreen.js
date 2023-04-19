@@ -6,6 +6,7 @@ import useKeylogger from "../hooks/useKeylogger";
 import PauseMenu from "./PauseMenu";
 import LevelLoader, { checkCoords, getMessage, startingCoords } from "../levels/LevelLoader";
 import EntityLoader, { initialEntities } from "../entities/EntityLoader";
+import EffectsLoader from "../effects/EffectsLoader";
 import { entityMovement, entityView } from "../entities/entityMovement";
 import Message from "./Message";
 import GameOverMenu from "./GameOverMenu";
@@ -24,17 +25,19 @@ function PlayScreen({setScreen}) {
     const [x, setX] = useState(0);
     
     const [entities, setEntities] = useState([]);
+    const [effects, setEffects] = useState([]);
     const [inventory, setInventory] = useState([]);
     const [interacting, setInteracting] = useState(false);
 
     const [tick, setTick] = useState(0);
-    const tickrate = 100; //ms   sets the refresh rate and gamespeed
+    const tickrate = 150; //ms   sets the refresh rate and gamespeed
     const [paused, setPaused] = useState(false);
 
     const [render, setRender] = useState([
         <LevelLoader level={level} key="levelLoader"/>,
         <PlayerAvatar face={face} interacting={interacting} moving={moving} key="playerAvatar"/>,
-        <EntityLoader level={level} entities={entities} setEntities={setEntities} key="entityLoader"/>
+        <EntityLoader level={level} entities={entities} setEntities={setEntities} key="entityLoader"/>,
+        <EffectsLoader level={level} effects={effects} setEffects={setEffects} key="effectsLoader"/>
     ]);
 
     const keylogger = useKeylogger();
@@ -242,8 +245,11 @@ function PlayScreen({setScreen}) {
         setY(start.y);
 
         const newLevel = <LevelLoader level={level} key="levelLoader"/>;
+        const newEffects = <EffectsLoader level={level} effects={effects} setEffects={setEffects} key="effectsLoader"/>;
+
         let newRender = [...render];
         newRender[newRender.findIndex(el => el.key === "levelLoader")] = newLevel;
+        newRender[newRender.findIndex(el => el.key === "effectsLoader")] = newEffects;
         setRender(newRender);
 
         initialEntities(level, setEntities);
@@ -259,6 +265,13 @@ function PlayScreen({setScreen}) {
         newRender[newRender.findIndex(el => el.key === "entityLoader")] = newEntities;
         setRender(newRender);
     }, [entities]);
+
+    useEffect(() => {
+        const newEffects = <EffectsLoader level={level} effects={effects} setEffects={setEffects} key="effectsLoader"/>;
+        let newRender = [...render];
+        newRender[newRender.findIndex(el => el.key === "effectsLoader")] = newEffects;
+        setRender(newRender);
+    }, [effects]);
 
     //sets rerender to tickrate and recalls functions on each tick
     const rerender = function() {
@@ -282,11 +295,13 @@ function PlayScreen({setScreen}) {
     useEffect(() => {
         verticalMove("#background", y, tickrate * 2);
         verticalMove(".entity-container", y, tickrate * 2);
+        verticalMove(".effects-container", y, tickrate * 2);
     }, [y]);
 
     useEffect(() => {
         horizontalMove("#background", x, tickrate * 2);
         horizontalMove(".entity-container", x, tickrate * 2);
+        horizontalMove(".effects-container", x, tickrate * 2);
     }, [x]);
 
     //halt the game and open the pause menu

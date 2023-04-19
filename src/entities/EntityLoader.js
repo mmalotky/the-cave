@@ -74,6 +74,17 @@ export function initialEntities(level, setEntities) {
                     gameover:true,
                     direction:"rrrrllll",
                     range:5
+                },
+                {
+                    id:"guard4",
+                    x: 15,
+                    y: 17,
+                    el:<Guard x={15} y={17} id="guard4" key="guard4"/>,
+                    unfixed:false,
+                    movement: "uuuudddd",
+                    gameover:true,
+                    direction:"uuuudddd",
+                    range:5
                 }
             ]);
             break;

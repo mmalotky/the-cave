@@ -72,7 +72,7 @@ export function entityView(entity, playerX, playerY, level) {
     switch(direction) {
         case 'r':
             for(let x = entity.x; x < entity.x + range; x++) {
-                if(checkCoords(level, 16-x, 8-entity.y) != 0) {
+                if(checkCoords(level, 16-x, 8-entity.y) !== 0) {
                     break;
                 }
                 if(16-playerX === x && 8-playerY === entity.y) {
@@ -82,7 +82,7 @@ export function entityView(entity, playerX, playerY, level) {
             break;
         case 'l':
             for(let x = entity.x; x > entity.x - range; x--) {
-                if(checkCoords(level, 16-x, 8-entity.y) != 0) {
+                if(checkCoords(level, 16-x, 8-entity.y) !== 0) {
                     break;
                 }
                 if(16-playerX === x && 8-playerY === entity.y) {
@@ -92,7 +92,7 @@ export function entityView(entity, playerX, playerY, level) {
             break;
         case 'u':
             for(let y = entity.y; y > entity.y - range; y--) {
-                if(checkCoords(level, 16-entity.x, 8-y) != 0) {
+                if(checkCoords(level, 16-entity.x, 8-y) !== 0) {
                     break;
                 }
                 if(16-playerX === entity.x && 8-playerY === y) {
@@ -102,7 +102,7 @@ export function entityView(entity, playerX, playerY, level) {
             break;
         case 'd':
             for(let y = entity.y; y < entity.x + range; y++) {
-                if(checkCoords(level, 16-entity.x, 8-y) != 0) {
+                if(checkCoords(level, 16-entity.x, 8-y) !== 0) {
                     break;
                 }
                 if(16-playerX === entity.x && 8-playerY === y) {
