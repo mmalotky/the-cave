@@ -253,6 +253,7 @@ function PlayScreen({setScreen}) {
         setRender(newRender);
 
         initialEntities(level, setEntities);
+        setInventory([]);
         fadeIn(".play-screen", tickrate*2);
     }
 

@@ -26,7 +26,7 @@ export function getMessage(level, key) {
             break;
         case "Test2":
             messageList = [
-
+                "Thanks For Playing"
             ]
             break;
     }
