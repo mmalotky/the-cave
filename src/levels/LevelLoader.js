@@ -44,6 +44,16 @@ export function startingCoords(level) {
     }
 }
 
+//messages to display at the beginning of a level
+export function startingMessage(level) {
+    switch(level) {
+        case "Test":
+            return "Use the WSAD keys to move, press F to interact.";
+        case "Test2":
+            return "Some entities have sightlines. Be careful sneaking past them.";
+    }
+}
+
 //return the background wallpaper element for the level
 function LevelLoader({level}) {
     switch(level) {

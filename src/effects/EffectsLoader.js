@@ -1,22 +1,21 @@
-import { useEffect } from "react";
 import Shadow from "./Shadow";
 import "./EffectsLoader.css";
 
-function EffectsLoader(props) {
+//load effects by level
+export function loadLevelEffects(level, setEffects) {
+    switch(level) {
+        case "Test":
+            setEffects([
+                <Shadow x={21} y={15} height={10} width={7} key="shadow1"/>
+            ]);
+            break;
+        case "Test2":
+            setEffects([]);
+            break;
+    }
+}
 
-    //each level load effects
-    useEffect(() => {
-        switch(props.level) {
-            case "Test":
-                props.setEffects([
-                    <Shadow x={21} y={15} height={10} width={7} key="shadow1"/>
-                ]);
-                break;
-            case "Test2":
-                props.setEffects([]);
-                break;
-        }
-    }, [props.level]);
+function EffectsLoader(props) {
 
     //loader is static while the container moves to reposition effects according to player position
     return (

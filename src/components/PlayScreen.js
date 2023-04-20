@@ -4,9 +4,9 @@ import { fadeIn, fadeOut, horizontalMove, verticalMove } from "../animations/Com
 import PlayerAvatar from "./PlayerAvatar";
 import useKeylogger from "../hooks/useKeylogger";
 import PauseMenu from "./PauseMenu";
-import LevelLoader, { checkCoords, getMessage, startingCoords } from "../levels/LevelLoader";
+import LevelLoader, { checkCoords, getMessage, startingCoords, startingMessage } from "../levels/LevelLoader";
 import EntityLoader, { initialEntities } from "../entities/EntityLoader";
-import EffectsLoader from "../effects/EffectsLoader";
+import EffectsLoader, { loadLevelEffects } from "../effects/EffectsLoader";
 import { entityMovement, entityView } from "../entities/entityMovement";
 import Message from "./Message";
 import GameOverMenu from "./GameOverMenu";
@@ -104,17 +104,23 @@ function PlayScreen({setScreen}) {
         return {frontX, frontY};
     }
 
+    const displayMessage = function(message) {
+        if(render[render.length - 1].key !== "message") {
+            let newRender = [...render];
+            newRender.push(<Message text={message} key="message"/>);
+            setRender(newRender);
+        }
+    }
+
     //interact with map features
     const mapInteraction = function(adjacent) {
         if(adjacent === 2) {
             fadeOut(".play-screen");
             setTimeout(() => setLevel("Test2"), 1000);
         }
-        if(adjacent > 2 && render[render.length - 1].key !== "message") {
-            let newRender = [...render];
+        if(adjacent > 2) {
             const message = getMessage(level, adjacent);
-            newRender.push(<Message text={message} key="message"/>);
-            setRender(newRender);
+            displayMessage(message);
         }
     }
 
@@ -132,12 +138,10 @@ function PlayScreen({setScreen}) {
             newEntities[index] = newEntity;
         }
 
-        if(entity.message  && render[render.length - 1].key !== "message") {
-            let newRender = [...render];
+        if(entity.message) {
             const message = entity.message[entity.message.length - 1];
-            newRender.push(<Message text={message} key="message"/>);
-            setRender(newRender);
-            
+            displayMessage(message);
+
             if(entity.message.length > 1) {
                 entity.message.pop();
             }
@@ -253,6 +257,7 @@ function PlayScreen({setScreen}) {
         setRender(newRender);
 
         initialEntities(level, setEntities);
+        loadLevelEffects(level, setEffects);
         setInventory([]);
         fadeIn(".play-screen", tickrate*2);
     }
@@ -267,11 +272,15 @@ function PlayScreen({setScreen}) {
         setRender(newRender);
     }, [entities]);
 
+    //render effects + set start message
     useEffect(() => {
         const newEffects = <EffectsLoader level={level} effects={effects} setEffects={setEffects} key="effectsLoader"/>;
         let newRender = [...render];
         newRender[newRender.findIndex(el => el.key === "effectsLoader")] = newEffects;
         setRender(newRender);
+        
+        const message = startingMessage(level);
+        displayMessage(message);
     }, [effects]);
 
     //sets rerender to tickrate and recalls functions on each tick
