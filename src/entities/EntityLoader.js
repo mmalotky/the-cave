@@ -88,6 +88,9 @@ export function initialEntities(level, setEntities) {
                 }
             ]);
             break;
+        default:
+            setEntities([]);
+            break;
     };
 }
 

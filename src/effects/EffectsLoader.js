@@ -12,6 +12,9 @@ export function loadLevelEffects(level, setEffects) {
         case "Test2":
             setEffects([]);
             break;
+        default:
+            setEffects([]);
+            break;
     }
 }
 

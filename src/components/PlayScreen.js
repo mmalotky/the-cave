@@ -4,7 +4,7 @@ import { fadeIn, fadeOut, horizontalMove, verticalMove } from "../animations/Com
 import PlayerAvatar from "./PlayerAvatar";
 import useKeylogger from "../hooks/useKeylogger";
 import PauseMenu from "./PauseMenu";
-import LevelLoader, { checkCoords, getMessage, startingCoords, startingMessage } from "../levels/LevelLoader";
+import LevelLoader, { checkCoords, getMessage, startingCoords } from "../levels/LevelLoader";
 import EntityLoader, { initialEntities } from "../entities/EntityLoader";
 import EffectsLoader, { loadLevelEffects } from "../effects/EffectsLoader";
 import { entityMovement, entityView } from "../entities/entityMovement";
@@ -37,7 +37,8 @@ function PlayScreen({setScreen}) {
         <LevelLoader level={level} key="levelLoader"/>,
         <PlayerAvatar face={face} interacting={interacting} moving={moving} key="playerAvatar"/>,
         <EntityLoader level={level} entities={entities} setEntities={setEntities} key="entityLoader"/>,
-        <EffectsLoader level={level} effects={effects} setEffects={setEffects} key="effectsLoader"/>
+        <EffectsLoader level={level} effects={effects} setEffects={setEffects} key="effectsLoader"/>,
+        <Message text={"Use WSAD keys to move. Press F to interact."} key="message"/>
     ]);
 
     const keylogger = useKeylogger();
@@ -278,11 +279,6 @@ function PlayScreen({setScreen}) {
         let newRender = [...render];
         newRender[newRender.findIndex(el => el.key === "effectsLoader")] = newEffects;
         setRender(newRender);
-
-        const message = startingMessage(level);
-        if(message) {
-            displayMessage(message);
-        }
     }, [effects]);
 
     //sets rerender to tickrate and recalls functions on each tick
