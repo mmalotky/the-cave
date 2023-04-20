@@ -278,9 +278,11 @@ function PlayScreen({setScreen}) {
         let newRender = [...render];
         newRender[newRender.findIndex(el => el.key === "effectsLoader")] = newEffects;
         setRender(newRender);
-        
+
         const message = startingMessage(level);
-        displayMessage(message);
+        if(message) {
+            displayMessage(message);
+        }
     }, [effects]);
 
     //sets rerender to tickrate and recalls functions on each tick
