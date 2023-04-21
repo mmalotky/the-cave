@@ -1,3 +1,31 @@
+# Project Description
+This project is a ground-up application that employs react and greensock to create a basic game engine. The intent of this project is educational and not intended for a production setting.
+
+## App Features
+Start Menu
+Save game progress (in progress)
+Pause/Start game
+Keylogging for in-game controls
+Level-based Rendering of maps, entities, and effects
+Gameover/restart level
+Timer-based rendering
+
+## In-Game Features
+Inventory/item unlocks
+Smooth character Movement/ direction-based interaction and animation
+Map Features (obstables, readable items, level finish)
+Entities (collisions, unlocks, drops, dialogue, movement, sightlines, gameover)
+In-game messages/alerts
+Effects (shadows)
+Level switching/smooth level transitions
+
+## Game Description
+Navigate the Map using movement controls (WASD) and interacting with the environment (F). Some entities are hostile and will cause game over if they catch you. Look for keys to locked doors. Find secrets on the map to give you hints along the way. Find the exit to start the next level.
+
+ESC will pause the game an give the user the option of exiting the menu screen or continuing to play. Pausing will cause the ingame timer to stop as well as player and entitity movement. Unpausing will resume from the point when the user pause the game.
+
+Game over may be triggered if the user is caught by an entity with a gameover trait. Gameover will give the user the choice of quitting or restarting the level.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
