@@ -1,5 +1,6 @@
 package dev10.caveServer.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,7 +12,6 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfig {
-
     private final JwtConverter jwtConverter;
 
     public SecurityConfig(JwtConverter jwtConverter) {
@@ -24,7 +24,7 @@ public class SecurityConfig {
         http.cors();
 
         http.authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/authenticate", "/api/create_account").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/authenticate", "/api/create_user").permitAll()
                 .antMatchers("/**").denyAll()
                 .and()
                 .addFilter(new JwtRequestFilter(authenticationManager(authenticationConfiguration), jwtConverter))

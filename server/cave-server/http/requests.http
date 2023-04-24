@@ -1,0 +1,15 @@
+@url = http://localhost:8080
+
+@token = ?
+
+###
+
+POST {{url}}/api/authenticate HTTP/1.1
+content-type: application/json
+
+{
+  "username": "admin",
+  "password": "root"
+}
+
+###
