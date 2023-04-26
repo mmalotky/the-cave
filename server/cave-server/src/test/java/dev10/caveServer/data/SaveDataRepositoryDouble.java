@@ -26,12 +26,12 @@ public class SaveDataRepositoryDouble implements SaveDataRepository {
 
     @Override
     public boolean updateSave(SaveData saveData) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean deleteSave(int saveId) {
-        return false;
+        return saveId == 1 || saveId == 2;
     }
 
     @Override

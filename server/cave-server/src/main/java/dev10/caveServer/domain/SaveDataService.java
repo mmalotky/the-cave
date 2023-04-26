@@ -2,7 +2,6 @@ package dev10.caveServer.domain;
 
 import dev10.caveServer.data.SaveDataRepository;
 import dev10.caveServer.models.SaveData;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +18,19 @@ public class SaveDataService {
     }
 
     public List<SaveData> findByUsername(String username) {
-        if(!checkUsername(username)) {
+        if(username == null || !checkUsername(username)) {
             return null;
         }
         return repository.getSaveDataByUsername(username);
     }
 
     public Result<SaveData> createSave(SaveData saveData) {
+        if(saveData == null) {
+            Result<SaveData> result = new Result<>();
+            result.addMessage("Save data is null.");
+            return result;
+        }
+
         Result<SaveData> result = validate(saveData);
         if(!result.isSuccess()) {
             return result;
@@ -35,6 +40,39 @@ public class SaveDataService {
             result.setPayload(save);
         } else {
             result.addMessage("Failed to save.");
+        }
+        return result;
+    }
+
+    public Result<SaveData> updateSave(SaveData saveData) {
+        if(saveData == null) {
+            Result<SaveData> result = new Result<>();
+            result.addMessage("Save data is null.");
+            return result;
+        }
+
+        Result<SaveData> result = validate(saveData);
+        if(saveData.getId() == 0) {
+            result.addMessage("Save ID is required.");
+        }
+
+        if(!result.isSuccess()) {
+            return result;
+        }
+        boolean updated = repository.updateSave(saveData);
+        if(updated) {
+            result.setPayload(saveData);
+        } else {
+            result.addMessage("Failed to update.");
+        }
+        return result;
+    }
+
+    public Result<Void> deleteSave(int saveId) {
+        Result<Void> result = new Result<>();
+        boolean deleted = repository.deleteSave(saveId);
+        if(!deleted) {
+            result.addMessage("Failed to delete.");
         }
         return result;
     }

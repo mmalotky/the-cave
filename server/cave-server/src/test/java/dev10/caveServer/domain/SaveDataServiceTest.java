@@ -46,6 +46,12 @@ class SaveDataServiceTest {
     }
 
     @Test
+    void shouldNotCreateANullSave() {
+        Result<SaveData> result = service.createSave(null);
+        assertFalse(result.isSuccess());
+    }
+
+    @Test
     void shouldNotCreateSaveWithNulls() {
         Result<SaveData> result = service.createSave(new SaveData(null, "new", "Test"));
         assertFalse(result.isSuccess());
@@ -66,5 +72,52 @@ class SaveDataServiceTest {
         ));
         assertFalse(result.isSuccess());
         assertEquals(3, result.getMessages().size());
+    }
+
+    @Test
+    void shouldUpdate() {
+        Result<SaveData> result = service.updateSave(new SaveData(1, "test", "newName", "Test2"));
+        assertTrue(result.isSuccess());
+    }
+
+    @Test
+    void shouldNotUpdateANullSave() {
+        Result<SaveData> result = service.updateSave(null);
+        assertFalse(result.isSuccess());
+    }
+
+    @Test
+    void shouldNotUpdateSaveWithNulls() {
+        Result<SaveData> result = service.updateSave(new SaveData(1,null, "new", "Test"));
+        assertFalse(result.isSuccess());
+
+        Result<SaveData> result2 = service.updateSave(new SaveData(1,"test", null, "Test"));
+        assertFalse(result2.isSuccess());
+
+        Result<SaveData> result3 = service.updateSave(new SaveData(1,"test", "new", null));
+        assertFalse(result3.isSuccess());
+    }
+
+    @Test
+    void shouldNotUpdateInvalidSave() {
+        Result<SaveData> result = service.updateSave(new SaveData(
+                "Not a User",
+                "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "Not a Level"
+        ));
+        assertFalse(result.isSuccess());
+        assertEquals(4, result.getMessages().size());
+    }
+
+    @Test
+    void shouldDelete() {
+        Result<Void> result = service.deleteSave(2);
+        assertTrue(result.isSuccess());
+    }
+
+    @Test
+    void shouldNotDeleteMissing() {
+        Result<Void> result = service.deleteSave(999);
+        assertFalse(result.isSuccess());
     }
 }
