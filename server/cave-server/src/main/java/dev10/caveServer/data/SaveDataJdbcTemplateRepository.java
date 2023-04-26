@@ -77,4 +77,10 @@ public class SaveDataJdbcTemplateRepository implements SaveDataRepository {
         int rowsAffected = jdbcTemplate.update(sql, saveId);
         return rowsAffected > 0;
     }
+
+    @Override
+    public List<String> getLevels() {
+        final String sql = "SELECT level_name from level_data;";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> rs.getString("level_name"));
+    }
 }

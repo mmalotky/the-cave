@@ -12,4 +12,6 @@ public interface SaveDataRepository {
     boolean updateSave(SaveData saveData);
 
     boolean deleteSave(int saveId);
+
+    List<String> getLevels();
 }

@@ -84,4 +84,10 @@ class SaveDataJdbcTemplateRepositoryTest {
         assertFalse(result);
     }
 
+    @Test
+    void shouldGetLevels() {
+        List<String> result = repository.getLevels();
+        assertEquals(2, result.size());
+    }
+
 }
