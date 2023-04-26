@@ -25,6 +25,7 @@ public class SecurityConfig {
 
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/authenticate", "/api/create_user").permitAll()
+                .antMatchers("/api/save").authenticated()
                 .antMatchers("/**").denyAll()
                 .and()
                 .addFilter(new JwtRequestFilter(authenticationManager(authenticationConfiguration), jwtConverter))

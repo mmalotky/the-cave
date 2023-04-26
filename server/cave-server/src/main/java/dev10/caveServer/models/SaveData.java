@@ -6,6 +6,8 @@ public class SaveData {
     private String saveName;
     private String level;
 
+    public SaveData(){}
+
     public SaveData(String user, String saveName, String level) {
         this.user = user;
         this.saveName = saveName;

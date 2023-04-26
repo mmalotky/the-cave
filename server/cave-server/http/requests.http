@@ -1,6 +1,6 @@
 @url = http://localhost:8080
 
-@token = ?
+@token = eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjYXZlLXNlcnZlciIsInN1YiI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOiJBRE1JTiIsImV4cCI6MTY4MjU0NTU3Nn0.W3MlfZZfbntBNFNh0YWiB_PNGpaRzmc8Bg-844g_NiU
 
 ###
 
@@ -20,6 +20,49 @@ content-type: application/json
 {
   "username": "user",
   "password": "pass"
+}
+
+###
+
+GET {{url}}/api/save HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+
+POST {{url}}/api/save HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "user":"admin",
+  "saveName":"New Game",
+  "level":"Test"
+}
+
+###
+
+PUT {{url}}/api/save HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id":1,
+  "user":"admin",
+  "saveName":"New Gamer",
+  "level":"Test2"
+}
+
+###
+
+DELETE {{url}}/api/save HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id":2,
+  "user":"admin",
+  "saveName":"New Game",
+  "level":"Test"
 }
 
 ###
