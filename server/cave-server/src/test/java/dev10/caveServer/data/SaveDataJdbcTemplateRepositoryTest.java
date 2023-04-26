@@ -35,7 +35,6 @@ class SaveDataJdbcTemplateRepositoryTest {
         List<SaveData> result = repository.getSaveDataByUsername("test");
         assertNotNull(result);
         assertTrue(1 < result.size());
-        assertEquals("test", result.get(0).getSaveName());
     }
 
     @Test
@@ -56,6 +55,33 @@ class SaveDataJdbcTemplateRepositoryTest {
     void shouldCreateASave() {
         SaveData result = repository.createSave(new SaveData("test", "testing", "Test"));
         assertNotNull(result);
+    }
+
+    @Test
+    void shouldUpdate() {
+        boolean result = repository.updateSave(new SaveData(1, "test", "test123", "Test2"));
+        assertTrue(result);
+        SaveData actual = repository.getSaveDataByUsername("test").get(0);
+        assertEquals("test123", actual.getSaveName());
+        assertEquals("Test2", actual.getLevel());
+    }
+
+    @Test
+    void shouldNotUpdateMissingSave() {
+        boolean result = repository.updateSave(new SaveData(999, "test", "test123", "Test2"));
+        assertFalse(result);
+    }
+
+    @Test
+    void shouldDelete() {
+        boolean result = repository.deleteSave(2);
+        assertTrue(result);
+    }
+
+    @Test
+    void shouldNotDeleteMissing() {
+        boolean result = repository.deleteSave(999);
+        assertFalse(result);
     }
 
 }

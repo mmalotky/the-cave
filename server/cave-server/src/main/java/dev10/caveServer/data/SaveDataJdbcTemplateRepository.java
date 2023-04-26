@@ -57,11 +57,24 @@ public class SaveDataJdbcTemplateRepository implements SaveDataRepository {
 
     @Override
     public boolean updateSave(SaveData saveData) {
-        return false;
+        final String sql = """
+                UPDATE save_data
+                set save_name = ?, level_id = (SELECT level_id from level_data where level_name = ?)
+                where save_id = ?;
+                """;
+
+        int rowsAffected = jdbcTemplate.update(sql, saveData.getSaveName(), saveData.getLevel(), saveData.getId());
+        return rowsAffected > 0;
     }
 
     @Override
     public boolean deleteSave(int saveId) {
-        return false;
+        final String sql = """
+                DELETE from save_data
+                where save_id = ?;
+                """;
+
+        int rowsAffected = jdbcTemplate.update(sql, saveId);
+        return rowsAffected > 0;
     }
 }
