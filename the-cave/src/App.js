@@ -4,11 +4,13 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import GamePage from "./components/GamePage";
+import GamePage from "./components/GameScreen/GamePage";
+import NavBar from "./components/NavBar";
 
 function App() {
   return (
     <Router>
+      <NavBar/>
       <Routes>
         <Route index element={<div>Hello</div>}/>
         <Route path="game" element={<GamePage/>}/>

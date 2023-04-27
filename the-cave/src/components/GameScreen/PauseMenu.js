@@ -1,4 +1,4 @@
-import { fadeOut } from "../animations/ComponentAnimations";
+import { fadeOut } from "../../animations/ComponentAnimations";
 import "./Menu.css"
 import StartMenu from "./StartMenu";
 

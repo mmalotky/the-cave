@@ -1,0 +1,19 @@
+.navbar {
+    height: 2rem;
+    margin: 0rem;
+    padding: 0rem;
+}
+
+.navbar-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    list-style-type: none;
+    align-content: center;
+}
+
+.navbar-link {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color:cadetblue;
+    text-decoration: none;
+}

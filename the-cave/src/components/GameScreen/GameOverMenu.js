@@ -1,6 +1,6 @@
 import "./Menu.css";
 import StartMenu from "./StartMenu";
-import { fadeOut } from "../animations/ComponentAnimations";
+import { fadeOut } from "../../animations/ComponentAnimations";
 
 function GameOverMenu({loadLevel, setScreen, unpause}) {
     const retry = function(evt) {

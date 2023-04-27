@@ -1,5 +1,6 @@
-import { fadeOut } from "../animations/ComponentAnimations";
+import { fadeOut } from "../../animations/ComponentAnimations";
 import "./Menu.css"
+import "./StartMenu.css"
 import PlayScreen from "./PlayScreen";
 
 //options: start game
@@ -18,7 +19,7 @@ function StartMenu({setScreen}) {
     }
 
     return (
-        <div className="menu-container">
+        <div className="menu-container start-menu">
             <form>
                 <button onClick={(evt) => start(evt)} className="menu-button">Start</button>
                 <button onClick={(evt) => load(evt)} className="menu-button" disabled>Load Save</button>

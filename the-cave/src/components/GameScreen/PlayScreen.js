@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import "./PlayScreen.css";
-import { fadeIn, fadeOut, horizontalMove, verticalMove } from "../animations/ComponentAnimations";
+import { fadeIn, fadeOut, horizontalMove, verticalMove } from "../../animations/ComponentAnimations";
 import PlayerAvatar from "./PlayerAvatar";
-import useKeylogger from "../hooks/useKeylogger";
+import useKeylogger from "../../hooks/useKeylogger";
 import PauseMenu from "./PauseMenu";
-import LevelLoader, { checkCoords, getMessage, startingCoords } from "../levels/LevelLoader";
-import EntityLoader, { initialEntities } from "../entities/EntityLoader";
-import EffectsLoader, { loadLevelEffects } from "../effects/EffectsLoader";
-import { entityMovement, entityView } from "../entities/entityMovement";
+import LevelLoader, { checkCoords, getMessage, startingCoords } from "../../levels/LevelLoader";
+import EntityLoader, { initialEntities } from "../../entities/EntityLoader";
+import EffectsLoader, { loadLevelEffects } from "../../effects/EffectsLoader";
+import { entityMovement, entityView } from "../../entities/entityMovement";
 import Message from "./Message";
 import GameOverMenu from "./GameOverMenu";
 
