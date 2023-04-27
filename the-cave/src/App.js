@@ -11,6 +11,7 @@ import Home from "./components/Home"
 import Login from "./components/Login";
 import { useState } from "react";
 import AuthContext from "./context/AuthContext"
+import CreateAccount from "./components/CreateAccount";
 
 function App() {
   let currentUserData = localStorage.getItem("userData");
@@ -34,6 +35,7 @@ function App() {
             <Navigate to="/login"/>
           }/>
           <Route path="login" element={<Login SERVER_URL={SERVER_URL} setUser={setUser}/>}/>
+          <Route path="create-account" element={<CreateAccount/>}/>
           <Route path="*" element={<NotFound/>} />
         </Routes>
       </Router>

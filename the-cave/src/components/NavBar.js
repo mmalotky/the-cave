@@ -26,6 +26,11 @@ function NavBar({setUser}) {
                     </Link>
                 </li>
                 <li>
+                    <Link className="navbar-link" to="/create-account">
+                        Create an Account
+                    </Link>
+                </li>
+                <li>
                     <Link className="navbar-link" to="/login">
                         { context ? "Switch Users" : "Sign-in"}
                     </Link>
