@@ -35,7 +35,7 @@ function App() {
             <Navigate to="/login"/>
           }/>
           <Route path="login" element={<Login SERVER_URL={SERVER_URL} setUser={setUser}/>}/>
-          <Route path="create-account" element={<CreateAccount/>}/>
+          <Route path="create-account" element={<CreateAccount SERVER_URL={SERVER_URL}/>}/>
           <Route path="*" element={<NotFound/>} />
         </Routes>
       </Router>
