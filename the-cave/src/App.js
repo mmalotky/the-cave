@@ -25,10 +25,14 @@ function App() {
   return (
     <AuthContext.Provider value={user}>
       <Router>
-        <NavBar/>
+        <NavBar setUser={setUser}/>
         <Routes>
           <Route index element={<Home/>}/>
-          <Route path="game" element={<GamePage/>}/>
+          <Route path="game" element={
+            user ?
+            <GamePage/> :
+            <Navigate to="/login"/>
+          }/>
           <Route path="login" element={<Login SERVER_URL={SERVER_URL} setUser={setUser}/>}/>
           <Route path="*" element={<NotFound/>} />
         </Routes>
