@@ -1,9 +1,10 @@
 import "./Form.css";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { json, useNavigate } from "react-router-dom";
 
 function CreateAccount({SERVER_URL}) {
-    const [loginData, setLoginData] = useState({username:"", password:"", passwordConfirm:""})
+    const [loginData, setLoginData] = useState({username:"", password:"", passwordConfirm:""});
+    const [err, setErr] = useState([]);
     const [valid, setValid] = useState(false);
     const navigate = useNavigate();
 
@@ -21,9 +22,10 @@ function CreateAccount({SERVER_URL}) {
             body: JSON.stringify(submission)
         })
         .then((response) => {
-            console.log(response)
             if(response.status === 201) navigate("/login");
-        });
+            return response.json();
+        })
+        .then(setErr);
     }
 
     const handleChange = function (evt) {
@@ -32,6 +34,17 @@ function CreateAccount({SERVER_URL}) {
         setValid(newLoginData.password === newLoginData.passwordConfirm);
         setLoginData(newLoginData);
     }
+
+    useEffect(()=> {
+        let newErr = [...err];
+        if(valid) {
+            newErr = newErr.filter(e => e !== "Passwords must match.");
+        }
+        else {
+            newErr.push("Passwords must match.");
+        }
+        setErr(newErr);
+    }, [valid]);
 
     return (
         <div className="form-container">
@@ -59,6 +72,7 @@ function CreateAccount({SERVER_URL}) {
                     value={loginData.passwordConfirm}
                 />
                 <button className="form-submit" type="submit">Submit</button>
+                {err.map(e=><div className="form-err" key={e}>{e}</div>)}
             </form>
         </div>
     );

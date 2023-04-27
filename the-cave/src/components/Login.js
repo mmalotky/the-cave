@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 function Login({SERVER_URL, setUser}) {
     const navigate = useNavigate();
+    const [err, setErr] = useState("");
     const [loginData, setLoginData] = useState({
         username:"",
         password:""
@@ -22,6 +23,7 @@ function Login({SERVER_URL, setUser}) {
         })
         .then((response) => {
             if(response.status === 200) return response.json();
+            else setErr("Login Failed.");
         })
         .then((jwtContainer) => {
             if(!jwtContainer) return;
@@ -71,6 +73,7 @@ function Login({SERVER_URL, setUser}) {
                     onChange={handleChange}
                 />
                 <button className="form-submit" type="submit">Submit</button>
+                <div className="form-err">{err}</div>
             </form>
         </div>
     );
