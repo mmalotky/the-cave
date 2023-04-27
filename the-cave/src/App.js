@@ -1,18 +1,20 @@
-import { useState, useEffect } from 'react';
-import './App.css';
-import StartMenu from './components/StartMenu';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import GamePage from "./components/GamePage";
 
 function App() {
-  const [screen, setScreen] = useState();
-
-  useEffect(() => {
-    setScreen(<StartMenu setScreen={setScreen}/>);
-  }, []);
-
   return (
-    <div className='app'>
-      {screen}
-    </div>
+    <Router>
+      <Routes>
+        <Route index element={<div>Hello</div>}/>
+        <Route path="game" element={<GamePage/>}/>
+        <Route path="*" element={<div>Not Found</div>} />
+      </Routes>
+    </Router>
   );
 }
 
