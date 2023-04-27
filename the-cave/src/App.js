@@ -6,15 +6,19 @@ import {
 } from "react-router-dom";
 import GamePage from "./components/GameScreen/GamePage";
 import NavBar from "./components/NavBar";
+import NotFound from "./components/NotFound";
+import Home from "./components/Home"
+import Login from "./components/Login";
 
 function App() {
   return (
     <Router>
       <NavBar/>
       <Routes>
-        <Route index element={<div>Hello</div>}/>
+        <Route index element={<Home/>}/>
         <Route path="game" element={<GamePage/>}/>
-        <Route path="*" element={<div>Not Found</div>} />
+        <Route path="login" element={<Login/>}/>
+        <Route path="*" element={<NotFound/>} />
       </Routes>
     </Router>
   );

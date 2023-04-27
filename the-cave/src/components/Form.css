@@ -1,0 +1,27 @@
+.form-container {
+    display: flex;
+    align-items:center;
+    justify-content: center;
+}
+
+.form-class {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-label {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.form-input {
+    padding: .5rem;
+    margin: .5rem;
+    border-radius: .25rem;
+}
+
+.form-submit {
+    padding: .5rem;
+    margin: .5rem;
+    border-radius: .5rem;
+    background-color: cadetblue;
+}
