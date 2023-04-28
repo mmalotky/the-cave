@@ -1,30 +1,14 @@
-import Shadow from "./Shadow";
 import "./EffectsLoader.css";
+import { useContext } from "react";
+import GameContext from "../context/GameContext";
 
-//load effects by level
-export function loadLevelEffects(level, setEffects) {
-    switch(level) {
-        case "Test":
-            setEffects([
-                <Shadow x={21} y={15} height={10} width={7} key="shadow1"/>
-            ]);
-            break;
-        case "Test2":
-            setEffects([]);
-            break;
-        default:
-            setEffects([]);
-            break;
-    }
-}
-
-function EffectsLoader(props) {
-    
+function EffectsLoader() {
+    const context = useContext(GameContext);
     //loader is static while the container moves to reposition effects according to player position
     return (
         <div className="effects-loader">
             <div className="effects-container">
-                {props.effects}
+                {context.effects}
             </div>
         </div>
     )

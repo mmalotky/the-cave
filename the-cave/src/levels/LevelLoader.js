@@ -1,61 +1,43 @@
 import { useContext } from "react";
-import TestLevel, { checkCoordsTestLevel } from "./TestLevel";
-import TestLevel2, { checkCoordsTestLevel2 } from "./TestLevel2";
+import TestLevel, { testData } from "./TestLevel";
+import TestLevel2, { test2Data } from "./TestLevel2";
 import GameContext from "../context/GameContext";
 
-//return map information from coordinates based on level
-export function checkCoords(level, x, y) {
+export function getLevelData(level) {
     switch(level) {
+        case "Test":return testData;
+        case "Test2":return test2Data;
+    }
+}
+
+//return map information from coordinates based on level
+export function checkCoords(levelData, x, y) {
+    let modX, modY;
+    switch(levelData.level) {
         case "Test":
-            return checkCoordsTestLevel(x + 34, y + 42);
+            modX = x + 34;
+            modY = y + 42;
+            break;
         case "Test2":
-            return checkCoordsTestLevel2(x + 34, y + 42);
+            modX = x + 34;
+            modY = y + 42;
+            break;
         default:
             return 1;
     }
-}
+    console.log(modX, modY)
 
-//return a message that is displayed by a map feature
-export function getMessage(level, key) {
-    let messageList;
-    let index = key - 3;
-    
-    switch(level) {
-        case "Test":
-            messageList = [
-                "Not Here",
-                "Wrong Castle",
-                "\"Nothing\" is here"
-            ]
-            break;
-        case "Test2":
-            messageList = [
-                "Thanks For Playing"
-            ]
-            break;
-        default:
-            messageList = [];
+    if(modX < 0 || modY < 0 || modX > levelData.grid.length || modY > levelData.grid[modX].length) {
+        return 1;
     }
 
-    return messageList[index];
-}
-
-//sets the player's starting coordinates for a level
-export function startingCoords(level) {
-    switch(level) {
-        case "Test":
-            return {x:-7, y:0};
-        case "Test2":
-            return {x:14, y:6};
-        default:
-            return {x:0, y:0};
-    }
+    return levelData.grid[modX][modY];
 }
 
 //return the background wallpaper element for the level
 function LevelLoader() {
     const context = useContext(GameContext);
-    switch(context) {
+    switch(context.level) {
         case "Test":
             return <TestLevel/>;
         case "Test2":

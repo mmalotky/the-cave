@@ -4,9 +4,9 @@ import { fadeIn, fadeOut, horizontalMove, verticalMove } from "../../animations/
 import PlayerAvatar from "./PlayerAvatar";
 import useKeylogger from "../../hooks/useKeylogger";
 import PauseMenu from "./PauseMenu";
-import LevelLoader, { checkCoords, getMessage, startingCoords } from "../../levels/LevelLoader";
-import EntityLoader, { initialEntities } from "../../entities/EntityLoader";
-import EffectsLoader, { loadLevelEffects } from "../../effects/EffectsLoader";
+import LevelLoader, { checkCoords, getLevelData } from "../../levels/LevelLoader";
+import EntityLoader from "../../entities/EntityLoader";
+import EffectsLoader from "../../effects/EffectsLoader";
 import { entityMovement, entityView } from "../../entities/entityMovement";
 import Message from "./Message";
 import GameOverMenu from "./GameOverMenu";
@@ -14,11 +14,14 @@ import GameContext from "../../context/GameContext";
 import CharContext from "../../context/CharContext";
 
 function PlayScreen({setScreen}) {
-    const [level, setLevel] = useState("Test");
+    const initialLevel = () => getLevelData("Test");
+    const [levelData, setLevelData] = useState(initialLevel);
+
     const [character, setCharacter] = useState({
         face:"face-down",
         moving:false,
-        interacting:false
+        interacting:false,
+        inventory:[]
     });
 
     const [right, setRight] = useState(false);
@@ -28,10 +31,6 @@ function PlayScreen({setScreen}) {
 
     const [y, setY] = useState(0);
     const [x, setX] = useState(0);
-    
-    const [entities, setEntities] = useState([]);
-    const [effects, setEffects] = useState([]);
-    const [inventory, setInventory] = useState([]);
 
     const [tick, setTick] = useState(0);
     const tickrate = 150; //ms   sets the refresh rate and gamespeed
@@ -40,8 +39,8 @@ function PlayScreen({setScreen}) {
     const [render, setRender] = useState([
         <LevelLoader key="levelLoader"/>,
         <PlayerAvatar key="playerAvatar"/>,
-        <EntityLoader entities={entities} key="entityLoader"/>,
-        <EffectsLoader effects={effects} key="effectsLoader"/>,
+        <EntityLoader key="entityLoader"/>,
+        <EffectsLoader key="effectsLoader"/>,
         <Message text={"Use WSAD keys to move. Press F to interact."} key="message"/>
     ]);
 
@@ -70,24 +69,24 @@ function PlayScreen({setScreen}) {
 
     //search coordinates for entities
     const checkEntities = function(x, y) {
-        return entities.find(e => e.x === 16 - x && e.y === 8 - y);
+        return levelData.entities.find(e => e.x === 16 - x && e.y === 8 - y);
     }
 
     //handle entity movement and range
     const updateEntities = function() {
-        let newEntities = [...entities];
-        newEntities.forEach(entity => {
+        let newLevelData = {...levelData};
+        newLevelData.entities.forEach(entity => {
             if(entity.movement) {
                 entityMovement(entity, x, y, gameOver, tickrate);
             }
             if(entity.direction && entity.range) {
-                const seen = entityView(entity, x, y, level);
+                const seen = entityView(entity, x, y, levelData.level);
                 if(seen && entity.gameover) {
                     gameOver();
                 }
             }
         });
-        setEntities(newEntities);
+        setLevelData(newLevelData);
     }
 
     //get coords in front of player
@@ -121,26 +120,29 @@ function PlayScreen({setScreen}) {
     const mapInteraction = function(adjacent) {
         if(adjacent === 2) {
             fadeOut(".play-screen");
-            setTimeout(() => setLevel("Test2"), 1000);
+            setTimeout(() => {
+                let newLevelData = getLevelData(levelData.next);
+                setLevelData(newLevelData);
+            }, 1000);
         }
         if(adjacent > 2) {
-            const message = getMessage(level, adjacent);
+            const message = levelData.messageList[adjacent - 3];
             displayMessage(message);
         }
     }
 
     //interact with entities
     const entityInteraction = function(entity) {
-        let newEntities = [...entities];
-        const index = newEntities.findIndex(p => p.id === entity.id);
-        let newInventory = [...inventory];
-        const keyIndex = inventory.findIndex(i => i.unlocks === entity.id);
+        let newLevelData = {...levelData};
+        const index = levelData.entities.findIndex(p => p.id === entity.id);
+        let newChar = {...character};
+        const keyIndex = character.inventory.findIndex(i => i.unlocks === entity.id);
 
         if(entity.drop) {
-            newInventory.push(entity.drop);
+            newChar.inventory.push(entity.drop);
             let newEntity = {...entity};
             delete newEntity.drop;
-            newEntities[index] = newEntity;
+            newLevelData.entities[index] = newEntity;
         }
 
         if(entity.message) {
@@ -152,16 +154,12 @@ function PlayScreen({setScreen}) {
             }
         }
         
-        if(entity.unfixed) {
-            newEntities.splice(index, 1);
-        }
-        else if(keyIndex !== -1) {
-            newEntities.splice(index, 1);
-            newInventory.splice(keyIndex, 1);
+        if(entity.unfixed || keyIndex !== -1) {
+            newLevelData.entities.splice(index, 1);
         }
         
-        setEntities(newEntities);
-        setInventory(newInventory);
+        setLevelData(newLevelData);
+        setCharacter(newChar);
     }
 
     //interact with nearby entities and map features
@@ -177,7 +175,7 @@ function PlayScreen({setScreen}) {
             entityInteraction(entity);
         }
 
-        const adjacent = checkCoords(level, front.frontX, front.frontY);
+        const adjacent = checkCoords(levelData, front.frontX, front.frontY);
         mapInteraction(adjacent);
 
         newChar.interacting = false;
@@ -208,14 +206,14 @@ function PlayScreen({setScreen}) {
             newX++;
         }
 
-        if(checkCoords(level, newX, newY) <= 0 && checkEntities(newX, newY) === undefined) {
+        if(checkCoords(levelData, newX, newY) <= 0 && checkEntities(newX, newY) === undefined) {
             setX(newX);
             setY(newY);
         }
-        else if(checkCoords(level, newX, y) <= 0 && checkEntities(newX, y) === undefined) {
+        else if(checkCoords(levelData, newX, y) <= 0 && checkEntities(newX, y) === undefined) {
             setX(newX);
         }
-        else if(checkCoords(level, x, newY) <= 0 && checkEntities(x, newY) === undefined) {
+        else if(checkCoords(levelData, x, newY) <= 0 && checkEntities(x, newY) === undefined) {
             setY(newY);
         }
     }
@@ -248,43 +246,16 @@ function PlayScreen({setScreen}) {
     //load a new level
 
     const loadLevel = function() {
-        const start = startingCoords(level);
-        setX(start.x);
-        setY(start.y);
-
-        const newEffects = <EffectsLoader effects={effects} key="effectsLoader"/>;
-
-        let newRender = [...render];
-        newRender[newRender.findIndex(el => el.key === "effectsLoader")] = newEffects;
-        setRender(newRender);
-
-        initialEntities(level, setEntities);
-        loadLevelEffects(level, setEffects);
-        setInventory([]);
+        setX(levelData.startingCoords.x);
+        setY(levelData.startingCoords.y);
         fadeIn(".play-screen", tickrate*2);
     }
 
-    useEffect(loadLevel, [level]);
-
-    //rerender entities
-    useEffect(() => {
-        const newEntities = <EntityLoader entities={entities} key="entityLoader"/>;
-        let newRender = [...render];
-        newRender[newRender.findIndex(el => el.key === "entityLoader")] = newEntities;
-        setRender(newRender);
-    }, [entities]);
-
-    //render effects + set start message
-    useEffect(() => {
-        const newEffects = <EffectsLoader effects={effects} key="effectsLoader"/>;
-        let newRender = [...render];
-        newRender[newRender.findIndex(el => el.key === "effectsLoader")] = newEffects;
-        setRender(newRender);
-    }, [effects]);
+    useEffect(loadLevel, [levelData.level]);
 
     //sets rerender to tickrate and recalls functions on each tick
     const rerender = function() {
-        if(tick % 2 === 0 && entities.length > 0) {
+        if(tick % 2 === 0 && levelData.entities.length > 0) {
             updateEntities();
         }
         else if (tick % 2 === 1){    
@@ -347,7 +318,7 @@ function PlayScreen({setScreen}) {
 
     return (
         <CharContext.Provider value={character}>
-            <GameContext.Provider value={level}>
+            <GameContext.Provider value={levelData}>
                 <div className="play-screen">
                     { render }
                 </div>
