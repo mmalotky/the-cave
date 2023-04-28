@@ -306,7 +306,15 @@ function PlayScreen({setScreen}) {
     const gameOver = function() {
         setPaused(true);
         let newRender = [...render];
-        newRender.push(<GameOverMenu key="gameOverMenu" unpause={unpause} loadLevel={loadLevel} setScreen={setScreen}/>);
+        newRender.push(
+            <GameOverMenu 
+                key="gameOverMenu" 
+                unpause={unpause} 
+                loadLevel={loadLevel} 
+                setLevelData={setLevelData}
+                setScreen={setScreen}
+            />
+        );
         setRender(newRender);
     }
 

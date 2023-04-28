@@ -1,10 +1,6 @@
 import bg from "../media/testingGrid2.jpg";
 import "./TestLevel.css";
 
-import Door from "../entities/Door";
-import Guard from "../entities/Guard";
-import Chest from "../entities/Chest";
-
 export const test2Data = {
     level:"Test2",
     startingCoords: {x:14, y:6},
@@ -13,25 +9,26 @@ export const test2Data = {
             id:"door124",
             x:17,
             y:26,
-            el:<Door x={17} y={26} id="door124" key="door124"/>,
+            el:"Door",
             unfixed:false
         },
         {
             id:"door125",
             x:24,
             y:34,
-            el:<Door x={24} y={34} id="door125" key="door125"/>,
+            el:"Door",
             unfixed:true
         },
         {
             id:"chest111",
             x:47,
             y:8,
-            el:<Chest x={47} y={8} id="chest111" key="chest111"/>,
+            el:"Chest",
             unfixed:false,
             drop: {
                 name:"Key",
-                unlocks:"door124"
+                unlocks:"door124",
+                level:"Test"
             },
             message: ["The chest is empty", "You found a key"]
         },
@@ -39,7 +36,7 @@ export const test2Data = {
             id:"guard3",
             x: 21,
             y: 18,
-            el:<Guard x={21} y={18} id="guard3" key="guard3"/>,
+            el:"Guard",
             unfixed:false,
             movement: "rrrrllll",
             gameover:true,
@@ -50,7 +47,7 @@ export const test2Data = {
             id:"guard4",
             x: 15,
             y: 17,
-            el:<Guard x={15} y={17} id="guard4" key="guard4"/>,
+            el:"Guard",
             unfixed:false,
             movement: "uuuudddd",
             gameover:true,

@@ -1,11 +1,20 @@
 import "./Menu.css";
 import StartMenu from "./StartMenu";
 import { fadeOut } from "../../animations/ComponentAnimations";
+import { getLevelData } from "../../levels/LevelLoader";
+import { useContext } from "react";
+import GameContext from "../../context/GameContext";
 
-function GameOverMenu({loadLevel, setScreen, unpause}) {
+function GameOverMenu({loadLevel, setLevelData, setScreen, unpause}) {
+    const context = useContext(GameContext);
+    
     const retry = function(evt) {
         evt.preventDefault();
         fadeOut(".play-screen");
+        
+        const levelReset = getLevelData(context.level);
+        setLevelData(levelReset);
+
         setTimeout(() => {
             loadLevel();
             unpause();

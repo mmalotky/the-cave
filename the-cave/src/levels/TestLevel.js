@@ -1,10 +1,6 @@
 import bg from "../media/testingGrid.jpg";
 import "./TestLevel.css";
 
-import Door from "../entities/Door";
-import Guard from "../entities/Guard";
-import Shadow from "../effects/Shadow";
-
 export const testData = {
     level:"Test",
     startingCoords: {x:-7, y:0},
@@ -13,14 +9,14 @@ export const testData = {
             id:"door123",
             x:24,
             y:20,
-            el:<Door x={24} y={20} id="door123" key="door123"/>,
+            el:"Door",
             unfixed:true
         },
         {
             id:"guard1",
             x:15,
             y:10,
-            el:<Guard x={15} y={10} id="guard1" key="guard1"/>,
+            el:"Guard",
             unfixed:false,
             movement:"uuuullllddddrrrr",
             message:["Move along, nothing to see here."],
@@ -30,14 +26,21 @@ export const testData = {
             id:"guard2",
             x: 22,
             y: 19,
-            el:<Guard x={22} y={19} id="guard2" key="guard2"/>,
+            el:"Guard",
             unfixed:false,
             movement: "rrrrllll",
             gameover:true
         }
     ],
     effects:[
-        <Shadow x={21} y={15} height={10} width={7} key="shadow1"/>
+        {
+            id:"shadow1",
+            el:"Shadow",
+            x:21,
+            y:15,
+            height:10,
+            width:7
+        }
     ],
     messageList:[
         "Not Here",
