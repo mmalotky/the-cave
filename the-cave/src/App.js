@@ -21,7 +21,7 @@ function App() {
   }
 
   const [user, setUser] = useState(currentUserData);
-  const SERVER_URL = "http://localhost:8080/api"
+  const SERVER_URL = "http://localhost:8080/api";
 
   return (
     <AuthContext.Provider value={user}>

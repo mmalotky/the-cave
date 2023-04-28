@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import Door from "./Door";
 import Guard from "./Guard";
 import Chest from "./Chest";
@@ -95,11 +94,6 @@ export function initialEntities(level, setEntities) {
 }
 
 function EntityLoader(props) {
-
-    //each level, load entity list
-    useEffect(() => {
-        initialEntities(props.level, props.setEntities);
-    }, [props.level]);
 
     //loader is static while the container moves to reposition entities according to player position
     return (

@@ -1,5 +1,7 @@
+import { useContext } from "react";
 import TestLevel, { checkCoordsTestLevel } from "./TestLevel";
 import TestLevel2, { checkCoordsTestLevel2 } from "./TestLevel2";
+import GameContext from "../context/GameContext";
 
 //return map information from coordinates based on level
 export function checkCoords(level, x, y) {
@@ -51,8 +53,9 @@ export function startingCoords(level) {
 }
 
 //return the background wallpaper element for the level
-function LevelLoader({level}) {
-    switch(level) {
+function LevelLoader() {
+    const context = useContext(GameContext);
+    switch(context) {
         case "Test":
             return <TestLevel/>;
         case "Test2":

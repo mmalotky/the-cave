@@ -19,7 +19,7 @@ export function loadLevelEffects(level, setEffects) {
 }
 
 function EffectsLoader(props) {
-
+    
     //loader is static while the container moves to reposition effects according to player position
     return (
         <div className="effects-loader">

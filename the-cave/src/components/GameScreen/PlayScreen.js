@@ -10,6 +10,7 @@ import EffectsLoader, { loadLevelEffects } from "../../effects/EffectsLoader";
 import { entityMovement, entityView } from "../../entities/entityMovement";
 import Message from "./Message";
 import GameOverMenu from "./GameOverMenu";
+import GameContext from "../../context/GameContext";
 
 function PlayScreen({setScreen}) {
     const [level, setLevel] = useState("Test");
@@ -34,10 +35,10 @@ function PlayScreen({setScreen}) {
     const [paused, setPaused] = useState(false);
 
     const [render, setRender] = useState([
-        <LevelLoader level={level} key="levelLoader"/>,
+        <LevelLoader key="levelLoader"/>,
         <PlayerAvatar face={face} interacting={interacting} moving={moving} key="playerAvatar"/>,
-        <EntityLoader level={level} entities={entities} setEntities={setEntities} key="entityLoader"/>,
-        <EffectsLoader level={level} effects={effects} setEffects={setEffects} key="effectsLoader"/>,
+        <EntityLoader entities={entities} key="entityLoader"/>,
+        <EffectsLoader effects={effects} key="effectsLoader"/>,
         <Message text={"Use WSAD keys to move. Press F to interact."} key="message"/>
     ]);
 
@@ -249,11 +250,9 @@ function PlayScreen({setScreen}) {
         setX(start.x);
         setY(start.y);
 
-        const newLevel = <LevelLoader level={level} key="levelLoader"/>;
-        const newEffects = <EffectsLoader level={level} effects={effects} setEffects={setEffects} key="effectsLoader"/>;
+        const newEffects = <EffectsLoader effects={effects} key="effectsLoader"/>;
 
         let newRender = [...render];
-        newRender[newRender.findIndex(el => el.key === "levelLoader")] = newLevel;
         newRender[newRender.findIndex(el => el.key === "effectsLoader")] = newEffects;
         setRender(newRender);
 
@@ -267,7 +266,7 @@ function PlayScreen({setScreen}) {
 
     //rerender entities
     useEffect(() => {
-        const newEntities = <EntityLoader level={level} entities={entities} setEntities={setEntities} key="entityLoader"/>;
+        const newEntities = <EntityLoader entities={entities} key="entityLoader"/>;
         let newRender = [...render];
         newRender[newRender.findIndex(el => el.key === "entityLoader")] = newEntities;
         setRender(newRender);
@@ -275,7 +274,7 @@ function PlayScreen({setScreen}) {
 
     //render effects + set start message
     useEffect(() => {
-        const newEffects = <EffectsLoader level={level} effects={effects} setEffects={setEffects} key="effectsLoader"/>;
+        const newEffects = <EffectsLoader effects={effects} key="effectsLoader"/>;
         let newRender = [...render];
         newRender[newRender.findIndex(el => el.key === "effectsLoader")] = newEffects;
         setRender(newRender);
@@ -345,9 +344,11 @@ function PlayScreen({setScreen}) {
     }, [paused]);
 
     return (
-        <div className="play-screen">
-            { render }
-        </div>
+        <GameContext.Provider value={level}>
+            <div className="play-screen">
+                { render }
+            </div>
+        </GameContext.Provider>
     );
 }
 
