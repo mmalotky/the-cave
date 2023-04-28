@@ -11,16 +11,20 @@ import { entityMovement, entityView } from "../../entities/entityMovement";
 import Message from "./Message";
 import GameOverMenu from "./GameOverMenu";
 import GameContext from "../../context/GameContext";
+import CharContext from "../../context/CharContext";
 
 function PlayScreen({setScreen}) {
     const [level, setLevel] = useState("Test");
-    const [face, setFace] = useState("face-down");
+    const [character, setCharacter] = useState({
+        face:"face-down",
+        moving:false,
+        interacting:false
+    });
 
     const [right, setRight] = useState(false);
     const [left, setLeft] = useState(false);
     const [up, setUp] = useState(false);
     const [down, setDown] = useState(false);
-    const [moving, setMoving] = useState(false);
 
     const [y, setY] = useState(0);
     const [x, setX] = useState(0);
@@ -28,7 +32,6 @@ function PlayScreen({setScreen}) {
     const [entities, setEntities] = useState([]);
     const [effects, setEffects] = useState([]);
     const [inventory, setInventory] = useState([]);
-    const [interacting, setInteracting] = useState(false);
 
     const [tick, setTick] = useState(0);
     const tickrate = 150; //ms   sets the refresh rate and gamespeed
@@ -36,7 +39,7 @@ function PlayScreen({setScreen}) {
 
     const [render, setRender] = useState([
         <LevelLoader key="levelLoader"/>,
-        <PlayerAvatar face={face} interacting={interacting} moving={moving} key="playerAvatar"/>,
+        <PlayerAvatar key="playerAvatar"/>,
         <EntityLoader entities={entities} key="entityLoader"/>,
         <EffectsLoader effects={effects} key="effectsLoader"/>,
         <Message text={"Use WSAD keys to move. Press F to interact."} key="message"/>
@@ -90,14 +93,14 @@ function PlayScreen({setScreen}) {
     //get coords in front of player
     const getFront = function() {
         let frontY; 
-        switch(face) {
+        switch(character.face) {
             case "face-up": frontY = y+1; break;
             case "face-down": frontY =  y-1; break;
             default: frontY =  y; break;
         }
 
         let frontX;
-        switch(face) {
+        switch(character.face) {
             case "face-left": frontX = x+1; break;
             case "face-right": frontX = x-1; break;
             default: frontX = x; break;
@@ -163,7 +166,10 @@ function PlayScreen({setScreen}) {
 
     //interact with nearby entities and map features
     const interact = function() {
-        setInteracting(true);
+        let newChar = {...character};
+        newChar.interacting = true;
+        setCharacter(newChar);
+
         const front = getFront();
 
         const entity = checkEntities(front.frontX, front.frontY);
@@ -173,7 +179,9 @@ function PlayScreen({setScreen}) {
 
         const adjacent = checkCoords(level, front.frontX, front.frontY);
         mapInteraction(adjacent);
-        setTimeout(() => setInteracting(false), 1000);
+
+        newChar.interacting = false;
+        setTimeout(() => setCharacter(newChar), 1000);
     }
 
     //handle player movement
@@ -212,35 +220,29 @@ function PlayScreen({setScreen}) {
         }
     }
 
-    //rerender avatar
-    useEffect(() => {
-        const newAvatar = <PlayerAvatar face={face} interacting={interacting} moving={moving} key="playerAvatar"/>;
-        let newRender = [...render];
-        newRender[newRender.findIndex(el => el.key === "playerAvatar")] = newAvatar;
-        setRender(newRender);
-    }, [face, moving, interacting]);
-
     //set avatar condition
     useEffect(() => {
+        let newChar = {...character};
         if(right) {
-            setFace("face-right");
-            setMoving(true);
+            newChar.face = "face-right";
+            newChar.moving = true;
         }
         else if(left) {
-            setFace("face-left");
-            setMoving(true);
+            newChar.face = "face-left";
+            newChar.moving = true;
         }
         else if(up) {
-            setFace("face-up");
-            setMoving(true);
+            newChar.face = "face-up";
+            newChar.moving = true;
         }
         else if(down) {
-            setFace("face-down");
-            setMoving(true);
+            newChar.face = "face-down";
+            newChar.moving = true;
         }
         else {
-            setMoving(false);
+            newChar.moving = false;
         }
+        setCharacter(newChar);
     }, [up, down, left, right]);
 
     //load a new level
@@ -344,11 +346,13 @@ function PlayScreen({setScreen}) {
     }, [paused]);
 
     return (
-        <GameContext.Provider value={level}>
-            <div className="play-screen">
-                { render }
-            </div>
-        </GameContext.Provider>
+        <CharContext.Provider value={character}>
+            <GameContext.Provider value={level}>
+                <div className="play-screen">
+                    { render }
+                </div>
+            </GameContext.Provider>
+        </CharContext.Provider>
     );
 }
 
