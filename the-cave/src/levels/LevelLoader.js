@@ -23,7 +23,7 @@ export function getLevelData(level) {
         return e;
     });
     data.effects.map(e => {
-        e = getEffectComponent(e);
+        e.el = getEffectComponent(e);
         return e;
     });
     console.log(data)

@@ -6,7 +6,14 @@ import Shadow from "./Shadow";
 export function getEffectComponent(effect) {
     switch(effect.el) {
         case "Shadow": return (
-            <Shadow id={effect.id} x={effect.x} y={effect.y} key={effect.id}/>
+            <Shadow 
+                id={effect.id} 
+                x={effect.x} 
+                y={effect.y} 
+                height={effect.height} 
+                width={effect.width} 
+                key={effect.id}
+            />
         );
         default: return <div>Not Found</div>
     }
@@ -19,7 +26,7 @@ function EffectsLoader() {
     return (
         <div className="effects-loader">
             <div className="effects-container">
-                
+                {context.effects.map(e => e.el)}
             </div>
         </div>
     )
