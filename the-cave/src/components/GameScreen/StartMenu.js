@@ -10,7 +10,7 @@ function StartMenu({setScreen}) {
     const start = function(evt) {
         evt.preventDefault();
         fadeOut(evt.target.parentElement)
-        setTimeout(() => setScreen(<PlayScreen setScreen={setScreen}/>), 1000);
+        setTimeout(() => setScreen(<PlayScreen setScreen={setScreen} startingLevel={"Test"}/>), 1000);
     }
 
     const load = function(evt) {

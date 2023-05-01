@@ -13,8 +13,8 @@ import GameOverMenu from "./GameOverMenu";
 import GameContext from "../../context/GameContext";
 import CharContext from "../../context/CharContext";
 
-function PlayScreen({setScreen}) {
-    const initialLevel = () => getLevelData("Test");
+function PlayScreen({setScreen, startingLevel}) {
+    const initialLevel = () => getLevelData(startingLevel);
     const [levelData, setLevelData] = useState(initialLevel);
 
     const [character, setCharacter] = useState({
@@ -108,6 +108,7 @@ function PlayScreen({setScreen}) {
         return {frontX, frontY};
     }
 
+    //display a message from a map feature or entity
     const displayMessage = function(message) {
         if(render[render.length - 1].key !== "message") {
             let newRender = [...render];
@@ -145,7 +146,7 @@ function PlayScreen({setScreen}) {
             newLevelData.entities[index] = newEntity;
         }
 
-        if(entity.message) {
+        if(entity.message && keyIndex === -1) {
             const message = entity.message[entity.message.length - 1];
             displayMessage(message);
 
@@ -316,6 +317,10 @@ function PlayScreen({setScreen}) {
             />
         );
         setRender(newRender);
+        
+        let newChar = {...character};
+        newChar.inventory = newChar.inventory.filter(i => i.level !== levelData.level);
+        setCharacter(newChar);
     }
 
     useEffect(() => {

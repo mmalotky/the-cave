@@ -26,7 +26,6 @@ export function getLevelData(level) {
         e.el = getEffectComponent(e);
         return e;
     });
-    console.log(data)
 
     return data;
 }

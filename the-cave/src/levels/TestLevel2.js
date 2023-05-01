@@ -10,7 +10,8 @@ export const test2Data = {
             x:17,
             y:26,
             el:"Door",
-            unfixed:false
+            unfixed:false,
+            message: ["It's locked."]
         },
         {
             id:"door125",
@@ -28,7 +29,7 @@ export const test2Data = {
             drop: {
                 name:"Key",
                 unlocks:"door124",
-                level:"Test"
+                level:"Test2"
             },
             message: ["The chest is empty", "You found a key"]
         },
