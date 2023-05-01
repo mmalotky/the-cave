@@ -1,8 +1,10 @@
 import "./Form.css";
-import React, { useEffect, useState } from "react";
-import { json, useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import RequestContext from "../context/RequestContext";
 
-function CreateAccount({SERVER_URL}) {
+function CreateAccount() {
+    const reqContext = useContext(RequestContext);
     const [loginData, setLoginData] = useState({username:"", password:"", passwordConfirm:""});
     const [err, setErr] = useState([]);
     const [valid, setValid] = useState(false);
@@ -14,7 +16,7 @@ function CreateAccount({SERVER_URL}) {
 
         const submission = {username: loginData.username, password: loginData.password};
 
-        fetch(SERVER_URL + "/create_user", {
+        fetch(reqContext + "/create_user", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

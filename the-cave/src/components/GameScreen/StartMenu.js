@@ -2,6 +2,7 @@ import { fadeOut } from "../../animations/ComponentAnimations";
 import "./Menu.css"
 import "./StartMenu.css"
 import PlayScreen from "./PlayScreen";
+import LoadMenu from "./LoadMenu";
 
 //options: start game
 
@@ -15,14 +16,15 @@ function StartMenu({setScreen}) {
 
     const load = function(evt) {
         evt.preventDefault();
-        //path to load menu
+        fadeOut(evt.target.parentElement)
+        setTimeout(() => setScreen(<LoadMenu setScreen={setScreen}/>), 1000);
     }
 
     return (
-        <div className="menu-container start-menu">
+        <div className="menu-container top-menu">
             <form>
                 <button onClick={(evt) => start(evt)} className="menu-button">Start</button>
-                <button onClick={(evt) => load(evt)} className="menu-button" disabled>Load Save</button>
+                <button onClick={(evt) => load(evt)} className="menu-button">Load Save</button>
             </form>
         </div>
     );

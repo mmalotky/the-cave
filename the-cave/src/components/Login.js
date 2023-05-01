@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./Form.css";
 import jwtDecode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import RequestContext from "../context/RequestContext";
 
-function Login({SERVER_URL, setUser}) {
+function Login({ setUser }) {
+    const reqContext = useContext(RequestContext);
     const navigate = useNavigate();
     const [err, setErr] = useState("");
     const [loginData, setLoginData] = useState({
@@ -14,7 +16,7 @@ function Login({SERVER_URL, setUser}) {
     function handleSubmit(evt) {
         evt.preventDefault();
 
-        fetch(SERVER_URL + "/authenticate", {
+        fetch(reqContext + "/authenticate", {
             method: "POST",
             headers: {
                 "Content-Type":"application/json"

@@ -10,7 +10,8 @@ import NotFound from "./components/NotFound";
 import Home from "./components/Home"
 import Login from "./components/Login";
 import { useState } from "react";
-import AuthContext from "./context/AuthContext"
+import AuthContext from "./context/AuthContext";
+import RequestContext from "./context/RequestContext";
 import CreateAccount from "./components/CreateAccount";
 
 function App() {
@@ -24,22 +25,24 @@ function App() {
   const SERVER_URL = "http://localhost:8080/api";
 
   return (
-    <AuthContext.Provider value={user}>
-      <Router>
-        <NavBar setUser={setUser}/>
-        <Routes>
-          <Route index element={<Home/>}/>
-          <Route path="game" element={
-            user ?
-            <GamePage/> :
-            <Navigate to="/login"/>
-          }/>
-          <Route path="login" element={<Login SERVER_URL={SERVER_URL} setUser={setUser}/>}/>
-          <Route path="create-account" element={<CreateAccount SERVER_URL={SERVER_URL}/>}/>
-          <Route path="*" element={<NotFound/>} />
-        </Routes>
-      </Router>
-    </AuthContext.Provider> 
+    <RequestContext.Provider value={SERVER_URL}>
+      <AuthContext.Provider value={user}>
+        <Router>
+          <NavBar setUser={setUser}/>
+          <Routes>
+            <Route index element={<Home/>}/>
+            <Route path="game" element={
+              user ?
+              <GamePage/> :
+              <Navigate to="/login"/>
+            }/>
+            <Route path="login" element={<Login setUser={setUser}/>}/>
+            <Route path="create-account" element={<CreateAccount/>}/>
+            <Route path="*" element={<NotFound/>} />
+          </Routes>
+        </Router>
+      </AuthContext.Provider> 
+    </RequestContext.Provider>
   );
 }
 
