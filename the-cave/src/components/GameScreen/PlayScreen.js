@@ -12,10 +12,12 @@ import Message from "./Message";
 import GameOverMenu from "./GameOverMenu";
 import GameContext from "../../context/GameContext";
 import CharContext from "../../context/CharContext";
+import SaveContext from "../../context/SaveContext";
 
-function PlayScreen({setScreen, startingLevel}) {
+function PlayScreen({setScreen, startingLevel, lastSave}) {
     const initialLevel = () => getLevelData(startingLevel);
     const [levelData, setLevelData] = useState(initialLevel);
+    const [saveData, setSaveData] = useState(lastSave);
 
     const [character, setCharacter] = useState({
         face:"face-down",
@@ -289,7 +291,14 @@ function PlayScreen({setScreen, startingLevel}) {
     const pause = function() {
         setPaused(true);
         let newRender = [...render];
-        newRender.push(<PauseMenu key="pauseMenu" unpause={unpause} setScreen={setScreen}/>);
+        newRender.push(
+            <PauseMenu 
+                key="pauseMenu" 
+                unpause={unpause} 
+                setScreen={setScreen} 
+                setSaveData={setSaveData}
+            />
+        );
         setRender(newRender);
     }
 
@@ -314,6 +323,7 @@ function PlayScreen({setScreen, startingLevel}) {
                 loadLevel={loadLevel} 
                 setLevelData={setLevelData}
                 setScreen={setScreen}
+                setSaveData={setSaveData}
             />
         );
         setRender(newRender);
@@ -330,13 +340,15 @@ function PlayScreen({setScreen, startingLevel}) {
     }, [paused]);
 
     return (
-        <CharContext.Provider value={character}>
-            <GameContext.Provider value={levelData}>
-                <div className="play-screen">
-                    { render }
-                </div>
-            </GameContext.Provider>
-        </CharContext.Provider>
+        <SaveContext.Provider value={saveData}>
+            <CharContext.Provider value={character}>
+                <GameContext.Provider value={levelData}>
+                    <div className="play-screen">
+                        { render }
+                    </div>
+                </GameContext.Provider>
+            </CharContext.Provider>
+        </SaveContext.Provider>
     );
 }
 

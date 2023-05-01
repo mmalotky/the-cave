@@ -52,3 +52,16 @@
 .menu-select > thead {
     background-color: cadetblue;
 }
+
+.menu-input {
+    background-color: cadetblue;
+    padding: .5rem;
+    border-radius: .2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-input > input {
+    margin: .5rem;
+    border-radius: .2;
+}

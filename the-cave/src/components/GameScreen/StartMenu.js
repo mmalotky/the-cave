@@ -4,9 +4,9 @@ import "./StartMenu.css"
 import PlayScreen from "./PlayScreen";
 import LoadMenu from "./LoadMenu";
 
-//options: start game
+//options: start game, load saves
 
-//todo: load save file, settings?
+//todo: settings?
 function StartMenu({setScreen}) {
     const start = function(evt) {
         evt.preventDefault();
@@ -23,8 +23,8 @@ function StartMenu({setScreen}) {
     return (
         <div className="menu-container top-menu">
             <form>
-                <button onClick={(evt) => start(evt)} className="menu-button">Start</button>
-                <button onClick={(evt) => load(evt)} className="menu-button">Load Save</button>
+                <button onClick={start} className="menu-button">Start</button>
+                <button onClick={load} className="menu-button">Load Save</button>
             </form>
         </div>
     );

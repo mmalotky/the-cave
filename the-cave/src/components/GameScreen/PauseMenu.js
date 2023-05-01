@@ -1,17 +1,38 @@
+import { useContext, useState } from "react";
 import { fadeOut } from "../../animations/ComponentAnimations";
 import "./Menu.css"
 import StartMenu from "./StartMenu";
+import RequestContext from "../../context/RequestContext";
+import AuthContext from "../../context/AuthContext";
+import GameContext from "../../context/GameContext";
+import SaveContext from "../../context/SaveContext";
 
 //should overlay the gamescreen, pause the game and controls
 
-//options: return to game, exit to start menu
+//options: return to game, exit to start menu, save
 
-//todo: save?
+function PauseMenu({unpause, setScreen, setSaveData}) {
+    const reqContext = useContext(RequestContext);
+    const authContext = useContext(AuthContext);
+    const gameContext = useContext(GameContext);
+    const saveContext = useContext(SaveContext);
 
-function PauseMenu({unpause, setScreen}) {
+    const [saveName, setSaveName] = useState(saveContext ? saveContext.saveName : "");
+
     const resume = function(evt) {
         evt.preventDefault();
         unpause();
+    }
+
+    const save = function(evt) {
+        evt.preventDefault();
+
+        if(saveContext && saveContext.saveName === saveName) {
+            updateSave();
+        }
+        else {
+            newSave();
+        }
     }
 
     const exit = function(evt) {
@@ -20,11 +41,64 @@ function PauseMenu({unpause, setScreen}) {
         setTimeout(() => setScreen(<StartMenu setScreen={setScreen}/>), 1000);
     }
 
+    const handleChange = function(evt) {
+        let newSaveName = evt.target.value;
+        setSaveName(newSaveName);
+    }
+
+    const newSave = function() {
+        fetch(reqContext + "/save", {
+            method: "POST",
+            headers: {
+                "Content-Type":"application/json",
+                Authorization: `Bearer ${authContext.token}`
+            },
+            body: JSON.stringify({
+                saveName:saveName,
+                level:gameContext.level,
+                user:authContext.userData.sub
+            })
+        })
+        .then((response) => {
+            if(response.status === 201) return response.json();
+        })
+        .then((savedData) => {
+            setSaveData(savedData);
+        });
+    }
+
+    const updateSave = function() {
+        fetch(reqContext + "/save", {
+            method: "PUT",
+            headers: {
+                "Content-Type":"application/json",
+                Authorization: `Bearer ${authContext.token}`
+            },
+            body: JSON.stringify({
+                id:saveContext.id,
+                saveName:saveName,
+                level:gameContext.level,
+                user:authContext.userData.sub
+            })
+        })
+        .then((response) => {
+            if(response.status === 202) return response.json();
+        })
+        .then((savedData) => {
+            setSaveData(savedData);
+        })
+    }
+
     return (
         <div className="menu-container">
             <form>
-                <button onClick={(evt) => resume(evt)} className="menu-button">resume</button>
-                <button onClick={(evt) => exit(evt)} className="menu-button">exit</button>
+                <button onClick={resume} className="menu-button">Resume</button>
+                <div className="menu-input">
+                    <label htmlFor="save-as">Save As</label>
+                    <input onChange={handleChange} id="save-as" value={saveName}/>
+                    <button onClick={save} className="menu-button">Save</button>
+                </div>
+                <button onClick={exit} className="menu-button">Exit</button>
             </form>
         </div>
     );
