@@ -17,7 +17,7 @@ import SaveContext from "../../context/SaveContext";
 function PlayScreen({setScreen, startingLevel, lastSave}) {
     const initialLevel = () => getLevelData(startingLevel);
     const [levelData, setLevelData] = useState(initialLevel);
-    const [saveData, setSaveData] = useState(lastSave);
+    const [saveData, setSaveData] = useState({...lastSave});
 
     const [character, setCharacter] = useState({
         face:"face-down",

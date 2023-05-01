@@ -2,6 +2,7 @@ import "./StartMenu.css";
 import "./Menu.css";
 import { useContext, useEffect, useState } from "react";
 import StartMenu from "./StartMenu";
+import PlayScreen from "./PlayScreen";
 import { fadeOut } from "../../animations/ComponentAnimations";
 import AuthContext from "../../context/AuthContext";
 import RequestContext from "../../context/RequestContext";
@@ -16,6 +17,22 @@ function LoadMenu({setScreen}) {
         evt.preventDefault();
         fadeOut(evt.target.parentElement)
         setTimeout(() => setScreen(<StartMenu setScreen={setScreen}/>), 1000);
+    }
+
+    const load = function(evt) {
+        evt.preventDefault();
+        const id = evt.target.parentElement.querySelector("input[name='save-select']:checked").value;
+        if(!id) return;
+        console.log(id, saves)
+
+        const save = saves.find((s) => {
+            console.log(s.id, id)
+            return s.id == id;
+        });
+        console.log(save)
+
+        fadeOut(evt.target.parentElement)
+        setTimeout(() => setScreen(<PlayScreen setScreen={setScreen} startingLevel={save.level} lastSave={save}/>), 1000);
     }
 
     const getSaves = function() {
@@ -57,7 +74,7 @@ function LoadMenu({setScreen}) {
                 <tbody>
                     {saves.map(s => (
                         <tr className="menu-row" key={s.saveName+s.id}>
-                            <td><input type="radio" id={s.saveName+s.id} value={s.level} name="save-select"/></td>
+                            <td><input type="radio" id={s.saveName+s.id} value={s.id} name="save-select"/></td>
                             <td><label htmlFor={s.saveName+s.id}>{s.saveName}</label></td>
                             <td><label htmlFor={s.saveName+s.id}>Not impemented</label></td>
                             <td><label htmlFor={s.saveName+s.id}>{s.level}</label></td>
@@ -72,7 +89,7 @@ function LoadMenu({setScreen}) {
         <div className="menu-container top-menu">
             <form>
                 { listSaves() }
-                <button className="menu-button" disabled={saves.length === 0}>Load Game</button>
+                <button onClick={load} className="menu-button" disabled={saves.length === 0}>Load Game</button>
                 <button onClick={returnToMain} className="menu-button">Main Menu</button>
             </form>
         </div>
