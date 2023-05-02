@@ -75,3 +75,9 @@
     margin: .5rem;
     border-radius: .2;
 }
+
+.menu-err {
+    color: rgb(207, 10, 10);
+    font-style: italic;
+    align-self: center;
+}

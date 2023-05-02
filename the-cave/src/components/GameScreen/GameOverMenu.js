@@ -2,7 +2,7 @@ import "./Menu.css";
 import StartMenu from "./StartMenu";
 import { fadeOut } from "../../animations/ComponentAnimations";
 import { getLevelData } from "../../levels/LevelLoader";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import GameContext from "../../context/GameContext";
 import RequestContext from "../../context/RequestContext";
 import AuthContext from "../../context/AuthContext";
@@ -14,7 +14,8 @@ function GameOverMenu({loadLevel, setLevelData, setScreen, unpause, setSaveData}
     const gameContext = useContext(GameContext);
     const saveContext = useContext(SaveContext);
 
-    const [saveName, setSaveName] = useState(saveContext ? saveContext.saveName : "");
+    const [saveName, setSaveName] = useState(saveContext.saveName);
+    const [saveState, setSaveState] = useState(<></>);
     
     const retry = function(evt) {
         evt.preventDefault();
@@ -32,7 +33,7 @@ function GameOverMenu({loadLevel, setLevelData, setScreen, unpause, setSaveData}
     const save = function(evt) {
         evt.preventDefault();
 
-        if(saveContext && saveContext.saveName === saveName) {
+        if(saveContext.saveName === saveName) {
             updateSave();
         }
         else {
@@ -66,12 +67,20 @@ function GameOverMenu({loadLevel, setLevelData, setScreen, unpause, setSaveData}
             })
         })
         .then((response) => {
-            if(response.status === 201) return response.json();
+            if(response.status === 201) {
+                setSaveState(<div>✅</div>);
+                return response.json();
+            }
+            else {
+                setSaveState(<div>Save Failed</div>)
+            }
         })
         .then((savedData) => {
-            setSaveData(savedData);
+            if(savedData) setSaveData(savedData);
         });
     }
+
+    useEffect(() => setSaveState(<></>), [saveName]);
 
     const updateSave = function() {
         fetch(reqContext + "/save", {
@@ -89,11 +98,17 @@ function GameOverMenu({loadLevel, setLevelData, setScreen, unpause, setSaveData}
             })
         })
         .then((response) => {
-            if(response.status === 202) return response.json();
+            if(response.status === 202) {
+                setSaveState(<div>✅</div>);
+                return response.json();
+            }
+            else {
+                setSaveState(<div>Save Failed</div>)
+            }
         })
         .then((savedData) => {
-            setSaveData(savedData);
-        })
+            if(savedData) setSaveData(savedData);
+        });
     }
 
     return (
@@ -104,6 +119,7 @@ function GameOverMenu({loadLevel, setLevelData, setScreen, unpause, setSaveData}
                 <div className="menu-input">
                     <label htmlFor="save-as">Save As</label>
                     <input onChange={handleChange} id="save-as" value={saveName}/>
+                    {saveState}
                     <button onClick={save} className="menu-button">Save</button>
                 </div>
                 <button onClick={exit} className="menu-button">Exit</button>

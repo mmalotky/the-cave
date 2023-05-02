@@ -12,6 +12,7 @@ function LoadMenu({setScreen}) {
     const authContext = useContext(AuthContext);
     const [saves, setSaves] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [err, setErr] = useState("");
 
     const returnToMain = function(evt) {
         evt.preventDefault();
@@ -42,7 +43,7 @@ function LoadMenu({setScreen}) {
             body: JSON.stringify(save)
         })
         .then((response) => {
-            if(response.status !== 204) return console.log(response);
+            if(response.status !== 204) return setErr("Could not complete request.");
             getSaves()
         })
     }
@@ -50,7 +51,10 @@ function LoadMenu({setScreen}) {
     const load = function(evt) {
         evt.preventDefault();
         const save = selectSave(evt);
-        if(!save) return;
+        if(!save) {
+            setErr("Please select a save.")
+            return;
+        }
 
         fadeOut(evt.target.parentElement)
         setTimeout(() => setScreen(<PlayScreen setScreen={setScreen} startingLevel={save.level} lastSave={save}/>), 1000);
@@ -111,6 +115,7 @@ function LoadMenu({setScreen}) {
     return (
         <div className="menu-container top-menu">
             <form>
+                <div className="menu-err">{err}</div>
                 { listSaves() }
                 <div>
                     <button onClick={load} className="menu-button" disabled={saves.length === 0}>Load Game</button>

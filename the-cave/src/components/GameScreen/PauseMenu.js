@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { fadeOut } from "../../animations/ComponentAnimations";
 import "./Menu.css"
 import StartMenu from "./StartMenu";
@@ -18,6 +18,7 @@ function PauseMenu({unpause, setScreen, setSaveData}) {
     const saveContext = useContext(SaveContext);
 
     const [saveName, setSaveName] = useState(saveContext ? saveContext.saveName : "");
+    const [saveState, setSaveState] = useState(<></>);
 
     const resume = function(evt) {
         evt.preventDefault();
@@ -61,12 +62,20 @@ function PauseMenu({unpause, setScreen, setSaveData}) {
             })
         })
         .then((response) => {
-            if(response.status === 201) return response.json();
+            if(response.status === 201) {
+                setSaveState(<div>✅</div>);
+                return response.json();
+            }
+            else {
+                setSaveState(<div>Save Failed</div>)
+            }
         })
         .then((savedData) => {
-            setSaveData(savedData);
+            if(savedData) setSaveData(savedData);
         });
     }
+
+    useEffect(() => setSaveState(<></>), [saveName]);
 
     const updateSave = function() {
         fetch(reqContext + "/save", {
@@ -84,11 +93,17 @@ function PauseMenu({unpause, setScreen, setSaveData}) {
             })
         })
         .then((response) => {
-            if(response.status === 202) return response.json();
+            if(response.status === 202) {
+                setSaveState(<div>✅</div>);
+                return response.json();
+            }
+            else {
+                setSaveState(<div>Save Failed</div>)
+            }
         })
         .then((savedData) => {
-            setSaveData(savedData);
-        })
+            if(savedData) setSaveData(savedData);
+        });
     }
 
     return (
@@ -98,6 +113,7 @@ function PauseMenu({unpause, setScreen, setSaveData}) {
                 <div className="menu-input">
                     <label htmlFor="save-as">Save As</label>
                     <input onChange={handleChange} id="save-as" value={saveName}/>
+                    {saveState}
                     <button onClick={save} className="menu-button">Save</button>
                 </div>
                 <button onClick={exit} className="menu-button">Exit</button>
