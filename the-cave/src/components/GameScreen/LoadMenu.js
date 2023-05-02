@@ -19,17 +19,38 @@ function LoadMenu({setScreen}) {
         setTimeout(() => setScreen(<StartMenu setScreen={setScreen}/>), 1000);
     }
 
+    const selectSave = function(evt) {
+        const el = evt.target.parentElement.querySelector("input[name='save-select']:checked");
+        if(!el) return;
+
+        return saves.find((s) => {
+            return s.id == el.value;
+        });
+    }
+
+    const deleteSelected = function(evt) {
+        evt.preventDefault();
+        const save = selectSave(evt);
+        if(!save) return;
+
+        fetch(reqContext + "/save", {
+            method: "DELETE",
+            headers: {
+                "Content-Type":"application/json",
+                Authorization: `Bearer ${authContext.token}`
+            },
+            body: JSON.stringify(save)
+        })
+        .then((response) => {
+            if(response.status !== 204) return console.log(response);
+            getSaves()
+        })
+    }
+
     const load = function(evt) {
         evt.preventDefault();
-        const id = evt.target.parentElement.querySelector("input[name='save-select']:checked").value;
-        if(!id) return;
-        console.log(id, saves)
-
-        const save = saves.find((s) => {
-            console.log(s.id, id)
-            return s.id == id;
-        });
-        console.log(save)
+        const save = selectSave(evt);
+        if(!save) return;
 
         fadeOut(evt.target.parentElement)
         setTimeout(() => setScreen(<PlayScreen setScreen={setScreen} startingLevel={save.level} lastSave={save}/>), 1000);
@@ -90,6 +111,7 @@ function LoadMenu({setScreen}) {
             <form>
                 { listSaves() }
                 <button onClick={load} className="menu-button" disabled={saves.length === 0}>Load Game</button>
+                <button onClick={deleteSelected} className="menu-button" disabled={saves.length === 0}>Delete</button>
                 <button onClick={returnToMain} className="menu-button">Main Menu</button>
             </form>
         </div>
