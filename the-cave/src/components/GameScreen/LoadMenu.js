@@ -98,7 +98,7 @@ function LoadMenu({setScreen}) {
                             <tr className="menu-row" key={s.saveName+s.id}>
                                 <td><input type="radio" id={s.saveName+s.id} value={s.id} name="save-select"/></td>
                                 <td><label htmlFor={s.saveName+s.id}>{s.saveName}</label></td>
-                                <td><label htmlFor={s.saveName+s.id}>Not impemented</label></td>
+                                <td><label htmlFor={s.saveName+s.id}>{new Date(s.saveDate).toLocaleString()}</label></td>
                                 <td><label htmlFor={s.saveName+s.id}>{s.level}</label></td>
                             </tr>
                         ))}

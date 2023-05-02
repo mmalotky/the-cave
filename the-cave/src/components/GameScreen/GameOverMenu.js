@@ -59,6 +59,7 @@ function GameOverMenu({loadLevel, setLevelData, setScreen, unpause, setSaveData}
                 Authorization: `Bearer ${authContext.token}`
             },
             body: JSON.stringify({
+                saveDate:Date.now(),
                 saveName:saveName,
                 level:gameContext.level,
                 user:authContext.userData.sub
@@ -81,6 +82,7 @@ function GameOverMenu({loadLevel, setLevelData, setScreen, unpause, setSaveData}
             },
             body: JSON.stringify({
                 id:saveContext.id,
+                saveDate:Date.now(),
                 saveName:saveName,
                 level:gameContext.level,
                 user:authContext.userData.sub

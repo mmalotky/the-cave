@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,13 +55,13 @@ class SaveDataJdbcTemplateRepositoryTest {
 
     @Test
     void shouldCreateASave() {
-        SaveData result = repository.createSave(new SaveData("test", "testing", "Test"));
+        SaveData result = repository.createSave(new SaveData("test", Timestamp.valueOf(LocalDateTime.now()), "testing", "Test"));
         assertNotNull(result);
     }
 
     @Test
     void shouldUpdate() {
-        boolean result = repository.updateSave(new SaveData(1, "test", "test123", "Test2"));
+        boolean result = repository.updateSave(new SaveData(1, "test", Timestamp.valueOf(LocalDateTime.now()), "test123", "Test2"));
         assertTrue(result);
         SaveData actual = repository.getSaveDataByUsername("test").get(0);
         assertEquals("test123", actual.getSaveName());
@@ -68,7 +70,7 @@ class SaveDataJdbcTemplateRepositoryTest {
 
     @Test
     void shouldNotUpdateMissingSave() {
-        boolean result = repository.updateSave(new SaveData(999, "test", "test123", "Test2"));
+        boolean result = repository.updateSave(new SaveData(999, "test", Timestamp.valueOf(LocalDateTime.now()), "test123", "Test2"));
         assertFalse(result);
     }
 

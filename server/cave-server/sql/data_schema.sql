@@ -26,6 +26,7 @@ CREATE table level_data (
 CREATE table save_data (
 	save_id int primary key auto_increment,
     user_id int not null,
+    save_date datetime not null,
     save_name varchar(100) not null,
     level_id int not null,
     constraint fk_save_data_app_user

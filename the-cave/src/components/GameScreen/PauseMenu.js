@@ -54,6 +54,7 @@ function PauseMenu({unpause, setScreen, setSaveData}) {
                 Authorization: `Bearer ${authContext.token}`
             },
             body: JSON.stringify({
+                saveDate:Date.now(),
                 saveName:saveName,
                 level:gameContext.level,
                 user:authContext.userData.sub
@@ -76,6 +77,7 @@ function PauseMenu({unpause, setScreen, setSaveData}) {
             },
             body: JSON.stringify({
                 id:saveContext.id,
+                saveDate:Date.now(),
                 saveName:saveName,
                 level:gameContext.level,
                 user:authContext.userData.sub

@@ -100,7 +100,7 @@ public class SaveDataService {
 
     private Result<SaveData> validate(SaveData saveData) {
         Result<SaveData> result = new Result<>();
-        if(saveData.getUser() == null || saveData.getLevel() == null || saveData.getSaveName() == null) {
+        if(saveData.getUser() == null || saveData.getSaveDate() == null || saveData.getLevel() == null || saveData.getSaveName() == null) {
             result.addMessage("Save data has null fields.");
             return result;
         }

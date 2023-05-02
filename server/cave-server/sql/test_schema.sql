@@ -26,6 +26,7 @@ CREATE table level_data (
 CREATE table save_data (
 	save_id int primary key auto_increment,
     user_id int not null,
+    save_date datetime not null,
     save_name varchar(100) not null,
     level_id int not null,
     constraint fk_save_data_app_user
@@ -56,9 +57,9 @@ BEGIN
 		("admin", "$2a$12$M97L0g/BETfVkdrWu98lWu29w1T232KW8CtJ8Q4XfP/NISiEy71xq", 2),
         ('test', "$2a$10$7JquBL6mi2OO85djCq4jUecR/aKurpmW8Niv1ohxNtoJdoNZPrcKK", 1);
         
-	INSERT into save_data(user_id, save_name, level_id) values
-		(2, "test", 2),
-        (2, "test", 1);
+	INSERT into save_data(user_id, save_date, save_name, level_id) values
+		(2, current_timestamp(), "test", 2),
+        (2, current_timestamp(), "test", 1);
 	
 end //
 delimiter ;

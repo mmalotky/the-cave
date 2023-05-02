@@ -12,6 +12,7 @@ public class SaveDataMapper implements RowMapper<SaveData> {
         return new SaveData(
                 rs.getInt("save_id"),
                 rs.getString("username"),
+                rs.getTimestamp("save_date"),
                 rs.getString("save_name"),
                 rs.getString("level_name")
         );

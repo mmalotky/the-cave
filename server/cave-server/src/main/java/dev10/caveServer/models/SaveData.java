@@ -1,24 +1,29 @@
 package dev10.caveServer.models;
 
+import java.sql.Timestamp;
+
 public class SaveData {
     private int id;
     private String user;
+    private Timestamp saveDate;
     private String saveName;
     private String level;
 
     public SaveData(){}
 
-    public SaveData(String user, String saveName, String level) {
+    public SaveData(String user, Timestamp saveDate, String saveName, String level) {
         this.user = user;
         this.saveName = saveName;
         this.level = level;
+        this.saveDate = saveDate;
     }
 
-    public SaveData(int id, String user, String saveName, String level) {
+    public SaveData(int id, String user, Timestamp saveDate, String saveName, String level) {
         this.id = id;
         this.user = user;
         this.saveName = saveName;
         this.level = level;
+        this.saveDate = saveDate;
     }
 
     public int getId() {
@@ -51,5 +56,13 @@ public class SaveData {
 
     public void setLevel(String level) {
         this.level = level;
+    }
+
+    public Timestamp getSaveDate() {
+        return saveDate;
+    }
+
+    public void setSaveDate(Timestamp saveDate) {
+        this.saveDate = saveDate;
     }
 }

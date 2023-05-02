@@ -6,6 +6,8 @@ import dev10.caveServer.models.SaveData;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,7 +42,7 @@ class SaveDataServiceTest {
 
     @Test
     void shouldCreateASave() {
-        Result<SaveData> result = service.createSave(new SaveData("test", "new", "Test"));
+        Result<SaveData> result = service.createSave(new SaveData("test", Timestamp.valueOf(LocalDateTime.now()), "new", "Test"));
         assertTrue(result.isSuccess());
         assertEquals(3, result.getPayload().getId());
     }
@@ -53,20 +55,24 @@ class SaveDataServiceTest {
 
     @Test
     void shouldNotCreateSaveWithNulls() {
-        Result<SaveData> result = service.createSave(new SaveData(null, "new", "Test"));
+        Result<SaveData> result = service.createSave(new SaveData(null, Timestamp.valueOf(LocalDateTime.now()), "new", "Test"));
         assertFalse(result.isSuccess());
 
-        Result<SaveData> result2 = service.createSave(new SaveData("test", null, "Test"));
+        Result<SaveData> result2 = service.createSave(new SaveData("test", Timestamp.valueOf(LocalDateTime.now()), null, "Test"));
         assertFalse(result2.isSuccess());
 
-        Result<SaveData> result3 = service.createSave(new SaveData("test", "new", null));
+        Result<SaveData> result3 = service.createSave(new SaveData("test", Timestamp.valueOf(LocalDateTime.now()), "new", null));
         assertFalse(result3.isSuccess());
+
+        Result<SaveData> result4 = service.createSave(new SaveData("test", null, "new", "Test"));
+        assertFalse(result4.isSuccess());
     }
 
     @Test
     void shouldNotCreateInvalidSave() {
         Result<SaveData> result = service.createSave(new SaveData(
                 "Not a User",
+                Timestamp.valueOf(LocalDateTime.now()),
                 "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
                 "Not a Level"
         ));
@@ -76,7 +82,7 @@ class SaveDataServiceTest {
 
     @Test
     void shouldUpdate() {
-        Result<SaveData> result = service.updateSave(new SaveData(1, "test", "newName", "Test2"));
+        Result<SaveData> result = service.updateSave(new SaveData(1, "test", Timestamp.valueOf(LocalDateTime.now()), "newName", "Test2"));
         assertTrue(result.isSuccess());
     }
 
@@ -88,20 +94,24 @@ class SaveDataServiceTest {
 
     @Test
     void shouldNotUpdateSaveWithNulls() {
-        Result<SaveData> result = service.updateSave(new SaveData(1,null, "new", "Test"));
+        Result<SaveData> result = service.updateSave(new SaveData(1,null, Timestamp.valueOf(LocalDateTime.now()), "new", "Test"));
         assertFalse(result.isSuccess());
 
-        Result<SaveData> result2 = service.updateSave(new SaveData(1,"test", null, "Test"));
+        Result<SaveData> result2 = service.updateSave(new SaveData(1,"test", Timestamp.valueOf(LocalDateTime.now()), null, "Test"));
         assertFalse(result2.isSuccess());
 
-        Result<SaveData> result3 = service.updateSave(new SaveData(1,"test", "new", null));
+        Result<SaveData> result3 = service.updateSave(new SaveData(1,"test", Timestamp.valueOf(LocalDateTime.now()), "new", null));
         assertFalse(result3.isSuccess());
+
+        Result<SaveData> result4 = service.updateSave(new SaveData(1,"test", null, "new", "Test"));
+        assertFalse(result4.isSuccess());
     }
 
     @Test
     void shouldNotUpdateInvalidSave() {
         Result<SaveData> result = service.updateSave(new SaveData(
                 "Not a User",
+                Timestamp.valueOf(LocalDateTime.now()),
                 "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
                 "Not a Level"
         ));

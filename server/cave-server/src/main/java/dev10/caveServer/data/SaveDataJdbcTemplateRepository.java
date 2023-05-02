@@ -20,7 +20,7 @@ public class SaveDataJdbcTemplateRepository implements SaveDataRepository {
     @Override
     public List<SaveData> getSaveDataByUsername(String username) {
         final String sql = """
-                SELECT save_id, au.username, save_name, ld.level_name from save_data sd
+                SELECT save_id, au.username, save_date, save_name, ld.level_name from save_data sd
                 inner join app_user au on sd.user_id = au.user_id
                 inner join level_data ld on sd.level_id = ld.level_id
                 where au.username = ?;
@@ -32,8 +32,9 @@ public class SaveDataJdbcTemplateRepository implements SaveDataRepository {
     @Override
     public SaveData createSave(SaveData saveData) {
         final String sql = """
-                INSERT into save_data(user_id, save_name, level_id) values
+                INSERT into save_data(user_id, save_date, save_name, level_id) values
                     ((SELECT user_id from app_user where username = ?),
+                     ?,
                      ?,
                      (SELECT level_id from level_data where level_name = ?));
                 """;
@@ -42,8 +43,9 @@ public class SaveDataJdbcTemplateRepository implements SaveDataRepository {
         int rowsAffected = jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, saveData.getUser());
-            ps.setString(2, saveData.getSaveName());
-            ps.setString(3, saveData.getLevel());
+            ps.setTimestamp(2, saveData.getSaveDate());
+            ps.setString(3, saveData.getSaveName());
+            ps.setString(4, saveData.getLevel());
             return ps;
         }, keyHolder);
 
@@ -59,11 +61,11 @@ public class SaveDataJdbcTemplateRepository implements SaveDataRepository {
     public boolean updateSave(SaveData saveData) {
         final String sql = """
                 UPDATE save_data
-                set save_name = ?, level_id = (SELECT level_id from level_data where level_name = ?)
+                set save_name = ?, save_date = ?, level_id = (SELECT level_id from level_data where level_name = ?)
                 where save_id = ?;
                 """;
 
-        int rowsAffected = jdbcTemplate.update(sql, saveData.getSaveName(), saveData.getLevel(), saveData.getId());
+        int rowsAffected = jdbcTemplate.update(sql, saveData.getSaveName(), saveData.getSaveDate(), saveData.getLevel(), saveData.getId());
         return rowsAffected > 0;
     }
 
