@@ -17,7 +17,7 @@ function PauseMenu({unpause, setScreen, setSaveData}) {
     const gameContext = useContext(GameContext);
     const saveContext = useContext(SaveContext);
 
-    const [saveName, setSaveName] = useState(saveContext ? saveContext.saveName : "");
+    const [saveName, setSaveName] = useState(saveContext.saveName);
     const [saveState, setSaveState] = useState(<></>);
 
     const resume = function(evt) {
@@ -28,7 +28,7 @@ function PauseMenu({unpause, setScreen, setSaveData}) {
     const save = function(evt) {
         evt.preventDefault();
 
-        if(saveContext && saveContext.saveName === saveName) {
+        if(saveContext.saveName === saveName) {
             updateSave();
         }
         else {

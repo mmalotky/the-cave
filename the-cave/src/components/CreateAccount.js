@@ -3,6 +3,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RequestContext from "../context/RequestContext";
 
+//Forum for creating a new user
+
 function CreateAccount() {
     const reqContext = useContext(RequestContext);
     const [loginData, setLoginData] = useState({username:"", password:"", passwordConfirm:""});

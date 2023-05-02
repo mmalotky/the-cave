@@ -3,6 +3,7 @@ import "./NavBar.css";
 import { useContext } from "react";
 import AuthContext from "../context/AuthContext";
 
+//sitewide navigation
 function NavBar({setUser}) {
     const context = useContext(AuthContext);
     const navigate = useNavigate();

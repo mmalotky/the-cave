@@ -8,6 +8,8 @@ import RequestContext from "../../context/RequestContext";
 import AuthContext from "../../context/AuthContext";
 import SaveContext from "../../context/SaveContext";
 
+//should overlay the gamescreen, pause the game and controls
+//options: restart the current level, save game, return to start menu
 function GameOverMenu({loadLevel, setLevelData, setScreen, unpause, setSaveData}) {
     const reqContext = useContext(RequestContext);
     const authContext = useContext(AuthContext);
@@ -17,6 +19,7 @@ function GameOverMenu({loadLevel, setLevelData, setScreen, unpause, setSaveData}
     const [saveName, setSaveName] = useState(saveContext.saveName);
     const [saveState, setSaveState] = useState(<></>);
     
+    //resets the level and player data to the beginnning of the current level
     const retry = function(evt) {
         evt.preventDefault();
         fadeOut(".play-screen");
@@ -30,6 +33,7 @@ function GameOverMenu({loadLevel, setLevelData, setScreen, unpause, setSaveData}
         }, 1000);
     }
 
+    //either updates the current save or make a new save for a different title
     const save = function(evt) {
         evt.preventDefault();
 
@@ -41,6 +45,7 @@ function GameOverMenu({loadLevel, setLevelData, setScreen, unpause, setSaveData}
         }
     }
 
+    //returns to start menu
     const exit = function(evt) {
         evt.preventDefault();
         fadeOut(".play-screen")
@@ -52,6 +57,7 @@ function GameOverMenu({loadLevel, setLevelData, setScreen, unpause, setSaveData}
         setSaveName(newSaveName);
     }
 
+    //fetch for new save
     const newSave = function() {
         fetch(reqContext + "/save", {
             method: "POST",
@@ -82,6 +88,7 @@ function GameOverMenu({loadLevel, setLevelData, setScreen, unpause, setSaveData}
 
     useEffect(() => setSaveState(<></>), [saveName]);
 
+    //fetch to update the current save
     const updateSave = function() {
         fetch(reqContext + "/save", {
             method: "PUT",

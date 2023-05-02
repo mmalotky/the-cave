@@ -7,6 +7,7 @@ import { fadeOut } from "../../animations/ComponentAnimations";
 import AuthContext from "../../context/AuthContext";
 import RequestContext from "../../context/RequestContext";
 
+//options: load an existing save, delete an existing save, return to start menu
 function LoadMenu({setScreen}) {
     const reqContext = useContext(RequestContext);
     const authContext = useContext(AuthContext);
@@ -14,12 +15,14 @@ function LoadMenu({setScreen}) {
     const [loading, setLoading] = useState(true);
     const [err, setErr] = useState("");
 
+    //returns to the Start menu
     const returnToMain = function(evt) {
         evt.preventDefault();
         fadeOut(evt.target.parentElement)
         setTimeout(() => setScreen(<StartMenu setScreen={setScreen}/>), 1000);
     }
 
+    //selects the chosen save from the save list
     const selectSave = function(evt) {
         const el = evt.target.parentElement.parentElement.querySelector("input[name='save-select']:checked");
         if(!el) return;
@@ -29,6 +32,7 @@ function LoadMenu({setScreen}) {
         });
     }
 
+    //deletes the selected save
     const deleteSelected = function(evt) {
         evt.preventDefault();
         const save = selectSave(evt);
@@ -48,6 +52,7 @@ function LoadMenu({setScreen}) {
         })
     }
 
+    //loads the game at the based on the selected save
     const load = function(evt) {
         evt.preventDefault();
         const save = selectSave(evt);
@@ -60,6 +65,7 @@ function LoadMenu({setScreen}) {
         setTimeout(() => setScreen(<PlayScreen setScreen={setScreen} startingLevel={save.level} lastSave={save}/>), 1000);
     }
 
+    //fetches the user's saves
     const getSaves = function() {
         fetch(reqContext + "/save", {
             method: "GET",
@@ -79,6 +85,7 @@ function LoadMenu({setScreen}) {
     }
     useEffect(getSaves, []);
 
+    //displays a list of saves
     const listSaves = function() {
         if (loading) {
             return <div className="menu-select">Loading...</div>

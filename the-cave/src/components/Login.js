@@ -4,6 +4,8 @@ import jwtDecode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import RequestContext from "../context/RequestContext";
 
+
+//Forum for logging in as an existing user
 function Login({ setUser }) {
     const reqContext = useContext(RequestContext);
     const navigate = useNavigate();
