@@ -120,4 +120,16 @@ class SaveDataServiceTest {
         Result<Void> result = service.deleteSave(999);
         assertFalse(result.isSuccess());
     }
+
+    @Test
+    void shouldCheckID() {
+        boolean result1 = service.checkId("test", 1);
+        assertTrue(result1);
+        boolean result2 = service.checkId("Not a username", 1);
+        assertFalse(result2);
+        boolean result3 = service.checkId("test", 999);
+        assertFalse(result3);
+        boolean result4 = service.checkId(null, 1);
+        assertFalse(result4);
+    }
 }

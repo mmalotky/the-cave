@@ -59,7 +59,7 @@ public class SaveDataController {
         UserDetails user = jwtConverter.getUserFromToken(token);
         String username = user.getUsername();
 
-        if(!Objects.equals(username, saveData.getUser())) {
+        if(!Objects.equals(username, saveData.getUser()) || !service.checkId(username, saveData.getId())) {
             return new ResponseEntity<>(List.of("Username must match the save data"), HttpStatus.FORBIDDEN);
         }
 
@@ -78,7 +78,7 @@ public class SaveDataController {
         UserDetails user = jwtConverter.getUserFromToken(token);
         String username = user.getUsername();
 
-        if(!Objects.equals(username, saveData.getUser())) {
+        if(!Objects.equals(username, saveData.getUser()) || !service.checkId(username, saveData.getId())) {
             return new ResponseEntity<>(List.of("Username must match the save data"), HttpStatus.FORBIDDEN);
         }
 

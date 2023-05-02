@@ -24,6 +24,18 @@ public class SaveDataService {
         return repository.getSaveDataByUsername(username);
     }
 
+    public boolean checkId(String username, int id) {
+        if(username == null) {
+            return false;
+        }
+        List<SaveData> saves = findByUsername(username);
+        if(saves == null) {
+            return false;
+        }
+
+        return saves.stream().anyMatch(s -> s.getId() == id);
+    }
+
     public Result<SaveData> createSave(SaveData saveData) {
         if(saveData == null) {
             Result<SaveData> result = new Result<>();
