@@ -20,7 +20,7 @@ function LoadMenu({setScreen}) {
     }
 
     const selectSave = function(evt) {
-        const el = evt.target.parentElement.querySelector("input[name='save-select']:checked");
+        const el = evt.target.parentElement.parentElement.querySelector("input[name='save-select']:checked");
         if(!el) return;
 
         return saves.find((s) => {
@@ -83,26 +83,28 @@ function LoadMenu({setScreen}) {
             return <div className="menu-select">No Saves Found</div>
         }
         return (
-            <table className="menu-select">
-                <thead>
-                    <tr className="menu-row">
-                        <th></th>
-                        <th>Save</th>
-                        <th>Date</th>
-                        <th>Level</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {saves.map(s => (
-                        <tr className="menu-row" key={s.saveName+s.id}>
-                            <td><input type="radio" id={s.saveName+s.id} value={s.id} name="save-select"/></td>
-                            <td><label htmlFor={s.saveName+s.id}>{s.saveName}</label></td>
-                            <td><label htmlFor={s.saveName+s.id}>Not impemented</label></td>
-                            <td><label htmlFor={s.saveName+s.id}>{s.level}</label></td>
+            <div className="menu-select">
+                <table>
+                    <thead>
+                        <tr className="menu-row">
+                            <th></th>
+                            <th>Save</th>
+                            <th>Date</th>
+                            <th>Level</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {saves.map(s => (
+                            <tr className="menu-row" key={s.saveName+s.id}>
+                                <td><input type="radio" id={s.saveName+s.id} value={s.id} name="save-select"/></td>
+                                <td><label htmlFor={s.saveName+s.id}>{s.saveName}</label></td>
+                                <td><label htmlFor={s.saveName+s.id}>Not impemented</label></td>
+                                <td><label htmlFor={s.saveName+s.id}>{s.level}</label></td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         )
     }
 
@@ -110,9 +112,11 @@ function LoadMenu({setScreen}) {
         <div className="menu-container top-menu">
             <form>
                 { listSaves() }
-                <button onClick={load} className="menu-button" disabled={saves.length === 0}>Load Game</button>
-                <button onClick={deleteSelected} className="menu-button" disabled={saves.length === 0}>Delete</button>
-                <button onClick={returnToMain} className="menu-button">Main Menu</button>
+                <div>
+                    <button onClick={load} className="menu-button" disabled={saves.length === 0}>Load Game</button>
+                    <button onClick={deleteSelected} className="menu-button" disabled={saves.length === 0}>Delete</button>
+                    <button onClick={returnToMain} className="menu-button">Main Menu</button>
+                </div>
             </form>
         </div>
     );

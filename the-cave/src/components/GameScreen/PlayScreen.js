@@ -43,7 +43,7 @@ function PlayScreen({setScreen, startingLevel, lastSave}) {
         <PlayerAvatar key="playerAvatar"/>,
         <EntityLoader key="entityLoader"/>,
         <EffectsLoader key="effectsLoader"/>,
-        <Message text={"Use WSAD keys to move. Press F to interact."} key="message"/>
+        levelData.level == "Test" ? <Message text={"Use WSAD keys to move. Press F to interact."} key="message"/> : <></>
     ]);
 
     const keylogger = useKeylogger();
