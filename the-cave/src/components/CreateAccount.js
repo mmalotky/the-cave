@@ -64,6 +64,7 @@ function CreateAccount() {
                 <label htmlFor="password">Password</label>
                 <input 
                     className="form-input"
+                    type="password"
                     id="password"
                     onChange={handleChange}
                     value={loginData.password}
@@ -71,6 +72,7 @@ function CreateAccount() {
                 <label htmlFor="passwordConfirm">Confirm Password</label>
                 <input 
                     className="form-input"
+                    type="password"
                     id="passwordConfirm"
                     onChange={handleChange}
                     value={loginData.passwordConfirm}

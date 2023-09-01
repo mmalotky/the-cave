@@ -17,13 +17,13 @@
 }
 
 .menu-button {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-family:'Courier New', Courier, monospace;
-    margin: 1rem;
-    padding: 1rem;
+    margin: .5rem;
+    padding: .5rem;
     background-color: bisque;
     border-radius: .5rem;
-    width: 15rem;
+    width: 29%;
 }
 
 .menu-button:hover {
